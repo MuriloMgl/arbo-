@@ -1,24 +1,4 @@
-/* ============================================================
-   ARBO — supabase-client.js
-   Inicializa o cliente Supabase usando as chaves públicas
-   injetadas pela Vercel como variáveis de ambiente.
+const SUPABASE_URL      = "https://xjvfsrgpwjeuythkxldd.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhqdmZzcmdwd2pldXl0aGt4bGRkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE2MTM4OTQsImV4cCI6MjA5NzE4OTg5NH0.0eekMteJBQzC7TXBHIv_5gLYF_GFRE_qjNNE4W9xKkI";
 
-   Na Vercel, configure:
-     SUPABASE_URL      → https://xxxxxxxxxxx.supabase.co
-     SUPABASE_ANON_KEY → eyJhbGciOiJIUzI1NiIsInR5...
-
-   O arquivo env.js (gerado pelo build da Vercel via api/env.js)
-   expõe essas variáveis em window.ENV antes de qualquer script.
-============================================================ */
-
-const SUPABASE_URL      = window.ENV?.SUPABASE_URL      || "";
-const SUPABASE_ANON_KEY = window.ENV?.SUPABASE_ANON_KEY || "";
-
-if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
-  console.error(
-    "[Arbo] Variáveis de ambiente do Supabase não encontradas. " +
-    "Verifique a configuração da Vercel (SUPABASE_URL e SUPABASE_ANON_KEY)."
-  );
-}
-
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const _supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
