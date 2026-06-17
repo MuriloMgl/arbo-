@@ -35,7 +35,7 @@ async function doLogin() {
 
   setLoading(true);
 
-  const { data, error } = await supabase.auth.signInWithPassword({ email, password: senha });
+  const { data, error } = await _supabase.auth.signInWithPassword({ email, password: senha });
 
   if (error) {
     setLoading(false);
@@ -54,7 +54,7 @@ async function doLogin() {
 
   if (perfilErr || !perfil) {
     showToast("Perfil não encontrado. Contate o suporte.");
-    await supabase.auth.signOut();
+    await _supabase.auth.signOut();
     return;
   }
 
@@ -78,7 +78,7 @@ async function doLogin() {
 async function doLogout() {
   closeProfileMenu();
   closeModal();
-  await supabase.auth.signOut();
+  await _supabase.auth.signOut();
   currentUserId   = null;
   currentProfile  = "usuario";
   currentUserName = "";
@@ -486,7 +486,7 @@ function iniciarRealtime() {
 
 (async () => {
   // Verifica se já existe uma sessão ativa (ex: refresh da página)
-  const { data: { session } } = await supabase.auth.getSession();
+  const { data: { session } } = await _supabase.auth.getSession();
 
   if (session) {
     const { data: perfil } = await supabase
