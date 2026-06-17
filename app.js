@@ -44,7 +44,7 @@ async function doLogin() {
   }
 
   // Busca o perfil no banco
-  const { data: perfil, error: perfilErr } = await supabase
+  const { data: perfil, error: perfilErr } = await _supabase
     .from("perfis")
     .select("tipo, nome")
     .eq("id", data.user.id)
@@ -79,7 +79,7 @@ async function doLogout() {
   closeProfileMenu();
   closeModal();
   await _supabase.auth.signOut();
-  currentUserId   = null;
+  currentUserId   = null; 
   currentProfile  = "usuario";
   currentUserName = "";
   navigate("login");
@@ -489,7 +489,7 @@ function iniciarRealtime() {
   const { data: { session } } = await _supabase.auth.getSession();
 
   if (session) {
-    const { data: perfil } = await supabase
+    const { data: perfil } = await _supabase
       .from("perfis")
       .select("tipo, nome")
       .eq("id", session.user.id)

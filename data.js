@@ -17,7 +17,7 @@
 /* ── FETCH TODAS AS DENÚNCIAS ───────────────────────────── */
 
 async function fetchDenuncias() {
-  const { data, error } = await supabase
+  const { data, error } = await _supabase
     .from("denuncias")
     .select("*")
     .order("created_at", { ascending: false });
@@ -38,7 +38,7 @@ async function fetchDenuncias() {
  *   tipo_categoria, img_url
  */
 async function inserirDenuncia(payload) {
-  const { data, error } = await supabase
+  const { data, error } = await _supabase
     .from("denuncias")
     .insert([{ ...payload, status: "analise" }])
     .select()
@@ -58,7 +58,7 @@ async function inserirDenuncia(payload) {
  * @param {string} status — "proc" | "rec"
  */
 async function atualizarStatus(id, status) {
-  const { error } = await supabase
+  const { error } = await _supabase
     .from("denuncias")
     .update({ status })
     .eq("id", id);
@@ -78,7 +78,7 @@ async function atualizarStatus(id, status) {
  * @returns {string|null} URL pública da foto ou null se falhar
  */
 async function uploadFoto(file, path) {
-  const { error } = await supabase.storage
+  const { error } = await _supabase.storage
     .from("fotos-denuncias")
     .upload(path, file, { upsert: false });
 
@@ -87,7 +87,7 @@ async function uploadFoto(file, path) {
     return null;
   }
 
-  const { data } = supabase.storage
+  const { data } = _supabase.storage
     .from("fotos-denuncias")
     .getPublicUrl(path);
 
@@ -101,7 +101,7 @@ async function uploadFoto(file, path) {
  * @param {Function} callback — chamado com (eventType, denúncia)
  */
 function escutarDenuncias(callback) {
-  supabase
+  _supabase
     .channel("denuncias-live")
     .on(
       "postgres_changes",
