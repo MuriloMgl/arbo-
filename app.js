@@ -84,7 +84,7 @@ async function doLogout() {
   currentUserName = "";
   navigate("login");
 }
-
+ 
 /** Seleciona perfil na tela de login (apenas visual) */
 function selectProfile(perfil) {
   currentProfile = perfil;
