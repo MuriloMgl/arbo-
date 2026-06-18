@@ -135,9 +135,9 @@ button, input, textarea { font-family: inherit; }
 .form-input:focus { border-color: var(--g700); }
 
 /* ── 5. LOGIN ────────────────────────────────────────────── */
-#screen-login { flex-direction: row; }
-.login-left { width: 420px; flex-shrink: 0; background: var(--g800); padding: 40px; display: flex; flex-direction: column; gap: 0; background-image: radial-gradient(ellipse at 20% 80%, rgba(46,125,69,.5) 0%, transparent 60%), radial-gradient(ellipse at 80% 20%, rgba(26,71,38,.6) 0%, transparent 50%); }
-.login-hero { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+#screen-login, #screen-cadastro { flex-direction: row; }
+.login-left { width: 420px; flex-shrink: 0; background: var(--g800); padding: 40px; display: flex; flex-direction: column; gap: 0; background-image: radial-gradient(ellipse at 20% 80%, rgba(46,125,69,.5) 0%, transparent 60%), radial-gradient(ellipse at 80% 20%, rgba(26,71,38,.6) 0%, transparent 50%); overflow: hidden; }
+.login-hero { flex: 1; display: flex; flex-direction: column; justify-content: center; overflow: hidden; }
 .login-badge { display: inline-block; background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.2); color: #fff; font-size: 11px; font-weight: 700; letter-spacing: .5px; padding: 5px 12px; border-radius: 20px; margin-bottom: 20px; }
 .login-headline { font-size: 28px; font-weight: 800; color: #fff; line-height: 1.2; letter-spacing: -.4px; margin-bottom: 14px; }
 .login-sub { font-size: 14px; color: rgba(255,255,255,.75); line-height: 1.6; margin-bottom: 28px; }
@@ -145,7 +145,8 @@ button, input, textarea { font-family: inherit; }
 .login-feature { display: flex; align-items: center; gap: 10px; font-size: 13px; color: rgba(255,255,255,.9); font-weight: 500; }
 .login-feature-icon { width: 32px; height: 32px; background: rgba(255,255,255,.12); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .login-footer { font-size: 11px; color: rgba(255,255,255,.4); margin-top: 28px; }
-.login-right { flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px; overflow-y: auto; min-height: 0; }
+.login-right { flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px; overflow-y: auto; }
+.login-box { width: 100%; max-width: 400px; margin: auto; }
 .login-box h1 { font-size: 24px; font-weight: 800; margin-bottom: 5px; }
 .login-box-sub { font-size: 13px; color: var(--muted); margin-bottom: 22px; }
 
