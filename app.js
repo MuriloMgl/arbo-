@@ -41,7 +41,7 @@ async function doCadastro() {
   const nome  = document.getElementById("cad-nome").value.trim();
   const email = document.getElementById("cad-email").value.trim();
   const senha  = document.getElementById("cad-senha").value;
-  const tipo  = document.querySelector(".profile-option.selected")?.dataset.perfil || "usuario";
+  const tipo  = document.getElementById("cad-tipo-val")?.value || "usuario";
 
   if (!nome || !email || !senha) { showToast("Preencha todos os campos"); return; }
   if (senha.length < 6) { showToast("A senha deve ter ao menos 6 caracteres"); return; }
@@ -113,6 +113,14 @@ function selectProfile(perfil) {
   if (el("profile-desc"))  el("profile-desc").textContent  = descs[perfil];
   if (el("login-btn"))     el("login-btn").textContent     = labels[perfil];
   if (el("cad-tipo-val"))  el("cad-tipo-val").value        = perfil;
+}
+
+/** Seleciona perfil na tela de CADASTRO (IDs separados para não conflitar com login) */
+function selectCadPerfil(btn, perfil) {
+  document.querySelectorAll("#screen-cadastro .profile-option").forEach(b => b.classList.remove("selected"));
+  btn.classList.add("selected");
+  const input = document.getElementById("cad-tipo-val");
+  if (input) input.value = perfil;
 }
 
 function toggleSenha(inputId = "login-senha") {
