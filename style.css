@@ -145,8 +145,7 @@ button, input, textarea { font-family: inherit; }
 .login-feature { display: flex; align-items: center; gap: 10px; font-size: 13px; color: rgba(255,255,255,.9); font-weight: 500; }
 .login-feature-icon { width: 32px; height: 32px; background: rgba(255,255,255,.12); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .login-footer { font-size: 11px; color: rgba(255,255,255,.4); margin-top: 28px; }
-.login-right { flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px; overflow-y: auto; }
-.login-box { width: 100%; max-width: 400px; }
+.login-right { flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px; overflow-y: auto; min-height: 0; }
 .login-box h1 { font-size: 24px; font-weight: 800; margin-bottom: 5px; }
 .login-box-sub { font-size: 13px; color: var(--muted); margin-bottom: 22px; }
 
