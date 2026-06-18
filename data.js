@@ -1,27 +1,23 @@
 /* ============================================================
-   ARBO — data.js
-   Camada de acesso a dados (Supabase).
-   Substituiu o array estático pelo banco real.
-
-   Funções exportadas para app.js e map.js:
-     fetchDenuncias()          → busca todas as denúncias
-     inserirDenuncia(payload)  → insere nova denúncia
-     atualizarStatus(id, st)   → atualiza status (ong/orgao)
-     uploadFoto(file, path)    → faz upload da foto
-     escutarDenuncias(cb)      → Realtime — chama cb em mudanças
-
-   renderCardHTML(d)           → gera HTML seguro (sem XSS)
-   renderCards(lista)          → renderiza grid de moderação
+   ARBO — data.js  v3
+   Melhorias:
+   - Status "resolvida" adicionado
+   - fetchDenuncias(incluirResolvidas) — filtro opcional
+   - renderCardHTML com foto + botão "Marcar Resolvida"
 ============================================================ */
 
-/* ── FETCH TODAS AS DENÚNCIAS ───────────────────────────── */
-
-async function fetchDenuncias() {
-  const { data, error } = await _supabase
+/* ── FETCH DENÚNCIAS ────────────────────────────────────── */
+async function fetchDenuncias(incluirResolvidas = false) {
+  let query = _supabase
     .from("denuncias")
     .select("*")
     .order("created_at", { ascending: false });
 
+  if (!incluirResolvidas) {
+    query = query.neq("status", "resolvida");
+  }
+
+  const { data, error } = await query;
   if (error) {
     console.error("[Arbo] Erro ao buscar denúncias:", error.message);
     return [];
@@ -30,13 +26,6 @@ async function fetchDenuncias() {
 }
 
 /* ── INSERIR NOVA DENÚNCIA ──────────────────────────────── */
-
-/**
- * @param {Object} payload
- *   titulo, descricao, autor_nome, autor_id,
- *   latitude, longitude, localizacao,
- *   tipo_categoria, img_url
- */
 async function inserirDenuncia(payload) {
   const { data, error } = await _supabase
     .from("denuncias")
@@ -51,12 +40,7 @@ async function inserirDenuncia(payload) {
   return data;
 }
 
-/* ── ATUALIZAR STATUS (moderação) ───────────────────────── */
-
-/**
- * @param {string} id     — UUID da denúncia
- * @param {string} status — "proc" | "rec"
- */
+/* ── ATUALIZAR STATUS ───────────────────────────────────── */
 async function atualizarStatus(id, status) {
   const { error } = await _supabase
     .from("denuncias")
@@ -71,12 +55,6 @@ async function atualizarStatus(id, status) {
 }
 
 /* ── UPLOAD DE FOTO ─────────────────────────────────────── */
-
-/**
- * @param {File}   file — arquivo de imagem selecionado
- * @param {string} path — ex: "user-id/timestamp.jpg"
- * @returns {string|null} URL pública da foto ou null se falhar
- */
 async function uploadFoto(file, path) {
   const { error } = await _supabase.storage
     .from("fotos-denuncias")
@@ -95,11 +73,6 @@ async function uploadFoto(file, path) {
 }
 
 /* ── REALTIME ───────────────────────────────────────────── */
-
-/**
- * Escuta INSERT e UPDATE na tabela denuncias.
- * @param {Function} callback — chamado com (eventType, denúncia)
- */
 function escutarDenuncias(callback) {
   _supabase
     .channel("denuncias-live")
@@ -111,13 +84,7 @@ function escutarDenuncias(callback) {
     .subscribe();
 }
 
-/* ── RENDER: HTML SEGURO (anti-XSS) ────────────────────── */
-
-/**
- * Escapa caracteres HTML para prevenir XSS.
- * @param {string} str
- * @returns {string}
- */
+/* ── HELPERS ────────────────────────────────────────────── */
 function esc(str) {
   if (!str) return "";
   return String(str)
@@ -128,57 +95,72 @@ function esc(str) {
     .replace(/'/g, "&#39;");
 }
 
-/**
- * Mapeia tipo_categoria para emoji e cor de fundo.
- * @param {string} tipo
- * @returns {{ emoji: string, bg: string }}
- */
 function tipoVisual(tipo) {
   const map = {
-    "Despejo ilegal": { emoji: "🗑️",  bg: "#FFF3E0" },
-    "Queimada":       { emoji: "🔥",  bg: "#FFF8E1" },
-    "Desmatamento":   { emoji: "🌲",  bg: "#E8F5E9" },
-    "Poluição":       { emoji: "🚯",  bg: "#E3F2FD" },
+    "Despejo ilegal": { emoji: "🗑️", bg: "#FFF3E0" },
+    "Queimada":       { emoji: "🔥", bg: "#FFF8E1" },
+    "Desmatamento":   { emoji: "🌲", bg: "#E8F5E9" },
+    "Poluição":       { emoji: "🚯", bg: "#E3F2FD" },
   };
   return map[tipo] || { emoji: "⚠️", bg: "#F5F5F5" };
 }
 
-/**
- * Formata timestamp ISO para texto legível.
- * @param {string} iso
- * @returns {string}
- */
 function formatarTempo(iso) {
   if (!iso) return "Agora";
   const diff = Math.floor((Date.now() - new Date(iso)) / 1000);
-  if (diff < 60)   return "Agora mesmo";
-  if (diff < 3600) return `Há ${Math.floor(diff / 60)} min`;
+  if (diff < 60)    return "Agora mesmo";
+  if (diff < 3600)  return `Há ${Math.floor(diff / 60)} min`;
   if (diff < 86400) return `Há ${Math.floor(diff / 3600)} hora${Math.floor(diff / 3600) > 1 ? "s" : ""}`;
   return `Há ${Math.floor(diff / 86400)} dia${Math.floor(diff / 86400) > 1 ? "s" : ""}`;
 }
 
-/**
- * Gera HTML de um card de denúncia de forma segura.
- * Todos os dados do usuário passam por esc() antes de entrar no DOM.
- * @param {Object} d — linha da tabela denuncias
- * @returns {string} HTML do card
- */
+/* ── RENDER CARD ────────────────────────────────────────── */
 function renderCardHTML(d) {
   const visual = tipoVisual(d.tipo_categoria);
-  const thumb  = d.img_url
+
+  // Foto ou emoji
+  const thumb = d.img_url
     ? `<img src="${esc(d.img_url)}" alt="${esc(d.titulo)}" class="den-thumb-photo">`
     : `<div class="den-thumb-emoji">${visual.emoji}</div>`;
 
-  const badgeClass = { analise: "badge-yellow", proc: "badge-green", rec: "badge-red" }[d.status] || "badge-yellow";
-  const badgeText  = { analise: "Não Verificada", proc: "Procedente",  rec: "Não procedente" }[d.status] || "Em análise";
+  const badgeClass = {
+    analise:   "badge-yellow",
+    proc:      "badge-green",
+    rec:       "badge-red",
+    resolvida: "badge-blue",
+  }[d.status] || "badge-yellow";
 
-  const loc   = esc(d.localizacao   || "Localização não informada");
-  const autor = esc(d.autor_nome    || "Anônimo");
-  const titulo = esc(d.titulo       || "Ocorrência ambiental");
-  const desc   = esc(d.descricao    || "");
+  const badgeText = {
+    analise:   "Não Verificada",
+    proc:      "Procedente",
+    rec:       "Não procedente",
+    resolvida: "Resolvida",
+  }[d.status] || "Em análise";
+
+  const loc    = esc(d.localizacao    || "Localização não informada");
+  const autor  = esc(d.autor_nome     || "Anônimo");
+  const titulo = esc(d.titulo         || "Ocorrência ambiental");
+  const desc   = esc(d.descricao      || "");
   const tipo   = esc(d.tipo_categoria || "Outro");
   const tempo  = formatarTempo(d.created_at);
   const id     = esc(d.id);
+
+  // Botões de ação conforme status
+  const isAnalise  = d.status === "analise";
+  const isProc     = d.status === "proc";
+  const acoes = isAnalise ? `
+    <button class="btn btn-danger"  onclick="recusar('${id}')">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      Recusar
+    </button>
+    <button class="btn btn-primary" onclick="aprovar('${id}')">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+      Aprovar
+    </button>` : isProc ? `
+    <button class="btn btn-resolve" onclick="resolverDenuncia('${id}')">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Marcar Resolvida
+    </button>` : `<p style="font-size:11px;color:var(--muted);text-align:center;width:100%">Sem ações disponíveis</p>`;
 
   return `
     <div class="den-card" data-status="${esc(d.status)}" id="card-${id}">
@@ -206,24 +188,11 @@ function renderCardHTML(d) {
             ${tempo}
           </li>
         </ul>
-        <div class="den-actions">
-          <button class="btn btn-danger"  onclick="recusar('${id}')">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"/></svg>
-            Recusar
-          </button>
-          <button class="btn btn-primary" onclick="aprovar('${id}')">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-            Aprovar
-          </button>
-        </div>
+        <div class="den-actions">${acoes}</div>
       </div>
     </div>`;
 }
 
-/**
- * Renderiza todos os cards no grid de moderação.
- * @param {Array} lista — array de denúncias do Supabase
- */
 function renderCards(lista) {
   const grid = document.getElementById("den-grid");
   if (!grid) return;

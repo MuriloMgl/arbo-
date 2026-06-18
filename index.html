@@ -12,9 +12,7 @@
 </head>
 <body>
 
-<!-- ══════════════════════════════════════════
-     TELA: LOGIN
-══════════════════════════════════════════ -->
+<!-- ══ TELA: LOGIN ══════════════════════════════════════ -->
 <div class="screen active" id="screen-login">
   <div class="login-left">
     <div class="logo logo-white">
@@ -26,18 +24,9 @@
       <h2 class="login-headline">Conectando denúncias ambientais a quem pode agir</h2>
       <p class="login-sub">Cidadãos relatam ocorrências, ONGs moderam e transformam em ações, e órgãos públicos acompanham a fiscalização — tudo em um só lugar.</p>
       <ul class="login-features">
-        <li class="login-feature">
-          <div class="login-feature-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg></div>
-          Mapeamento de ocorrências em tempo real
-        </li>
-        <li class="login-feature">
-          <div class="login-feature-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-          Moderação e validação por organizações parceiras
-        </li>
-        <li class="login-feature">
-          <div class="login-feature-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
-          Mutirões e ações colaborativas de impacto
-        </li>
+        <li class="login-feature"><div class="login-feature-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg></div>Mapeamento de ocorrências em tempo real</li>
+        <li class="login-feature"><div class="login-feature-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>Moderação e validação por organizações parceiras</li>
+        <li class="login-feature"><div class="login-feature-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>Mutirões e ações colaborativas de impacto</li>
       </ul>
     </div>
     <p class="login-footer">© 2026 Arbo. Todos os direitos reservados.</p>
@@ -49,17 +38,17 @@
       <p class="login-box-sub">Selecione seu perfil para continuar</p>
 
       <div class="profile-selector">
-        <button class="profile-option selected" id="popt-usuario" onclick="selectProfile('usuario')">
+        <button class="profile-option selected" id="popt-usuario" data-perfil="usuario" onclick="selectProfile('usuario')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
           Usuário
         </button>
-        <button class="profile-option" id="popt-ong" onclick="selectProfile('ong')">
+        <button class="profile-option" id="popt-ong" data-perfil="ong" onclick="selectProfile('ong')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
           ONG
         </button>
-        <button class="profile-option" id="popt-orgao" onclick="selectProfile('orgao')">
+        <button class="profile-option" id="popt-orgao" data-perfil="orgao" onclick="selectProfile('orgao')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>
-          Outro Órgão
+          Órgão
         </button>
       </div>
       <p class="profile-desc" id="profile-desc">Registre e acompanhe denúncias ambientais</p>
@@ -74,7 +63,7 @@
       <div class="input-wrap">
         <span class="input-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
         <input type="password" class="form-input" id="login-senha" placeholder="Sua senha" />
-        <span class="input-suffix" onclick="toggleSenha()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></span>
+        <span class="input-suffix" onclick="toggleSenha('login-senha')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></span>
       </div>
 
       <div class="login-options">
@@ -83,49 +72,96 @@
       </div>
 
       <button class="btn btn-primary btn-full" id="login-btn" onclick="doLogin()">Entrar como Usuário →</button>
-      <p class="login-register">Não tem uma conta? <a class="login-link">Cadastre-se</a></p>
+      <p class="login-register">Não tem uma conta? <a class="login-link" onclick="mostrarCadastro()">Cadastre-se</a></p>
     </div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════
-     TELA: MAPA
-══════════════════════════════════════════ -->
-<div class="screen" id="screen-mapa">
-  <header class="topbar">
-    <div class="logo" onclick="navigate('mapa')">
+<!-- ══ TELA: CADASTRO ═══════════════════════════════════ -->
+<div class="screen" id="screen-cadastro">
+  <div class="login-left">
+    <div class="logo logo-white">
       <div class="logo-mark"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2L3 5v6c0 3.87 3.04 7.5 7 8.45C13.96 18.5 17 14.87 17 11V5L10 2z" fill="rgba(255,255,255,0.2)"/><path d="M10 5c-1.1 1.6-1.5 3.2-.8 4.7.5 1 1.4 1.7 2.3 2-.5-1.2-.3-2.6.5-3.7C11.3 7.2 10.5 5.9 10 5z" fill="white"/><path d="M10 5c1.1 1.6 1.5 3.2.8 4.7-.5 1-1.4 1.7-2.3 2 .5-1.2.3-2.6-.5-3.7C8.7 7.2 9.5 5.9 10 5z" fill="rgba(255,255,255,0.6)"/><rect x="9.2" y="11.5" width="1.6" height="3.5" rx="0.8" fill="white"/></svg></div>
       Arbo
     </div>
-    <div class="search-bar">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-      Buscar local ou ocorrência...
+    <div class="login-hero">
+      <div class="login-badge">Crie sua conta</div>
+      <h2 class="login-headline">Faça parte da maior rede de proteção ambiental colaborativa</h2>
+      <p class="login-sub">Junte-se a cidadãos, ONGs e órgãos públicos que já estão fazendo a diferença no meio ambiente.</p>
     </div>
+    <p class="login-footer">© 2026 Arbo. Todos os direitos reservados.</p>
+  </div>
+
+  <div class="login-right">
+    <div class="login-box">
+      <h1>Criar conta</h1>
+      <p class="login-box-sub">Escolha seu tipo de perfil</p>
+
+      <div class="profile-selector">
+        <button class="profile-option selected" id="popt-usuario" data-perfil="usuario" onclick="selectProfile('usuario')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+          Usuário
+        </button>
+        <button class="profile-option" id="popt-ong" data-perfil="ong" onclick="selectProfile('ong')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          ONG
+        </button>
+        <button class="profile-option" id="popt-orgao" data-perfil="orgao" onclick="selectProfile('orgao')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>
+          Órgão
+        </button>
+      </div>
+      <input type="hidden" id="cad-tipo-val" value="usuario">
+
+      <label class="form-label">Nome completo</label>
+      <div class="input-wrap">
+        <span class="input-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></span>
+        <input type="text" class="form-input" id="cad-nome" placeholder="Seu nome ou nome da organização" />
+      </div>
+
+      <label class="form-label">E-mail</label>
+      <div class="input-wrap">
+        <span class="input-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></span>
+        <input type="email" class="form-input" id="cad-email" placeholder="voce@exemplo.com" />
+      </div>
+
+      <label class="form-label">Senha</label>
+      <div class="input-wrap">
+        <span class="input-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
+        <input type="password" class="form-input" id="cad-senha" placeholder="Mínimo 6 caracteres" />
+        <span class="input-suffix" onclick="toggleSenha('cad-senha')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></span>
+      </div>
+
+      <button class="btn btn-primary btn-full" onclick="doCadastro()">Criar conta →</button>
+      <p class="login-register">Já tem uma conta? <a class="login-link" onclick="voltarLogin()">Entrar</a></p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ TELA: MAPA ═══════════════════════════════════════ -->
+<div class="screen" id="screen-mapa">
+  <header class="topbar">
+    <div class="logo"><div class="logo-mark"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2L3 5v6c0 3.87 3.04 7.5 7 8.45C13.96 18.5 17 14.87 17 11V5L10 2z" fill="rgba(255,255,255,0.2)"/><path d="M10 5c-1.1 1.6-1.5 3.2-.8 4.7.5 1 1.4 1.7 2.3 2-.5-1.2-.3-2.6.5-3.7C11.3 7.2 10.5 5.9 10 5z" fill="white"/><path d="M10 5c1.1 1.6 1.5 3.2.8 4.7-.5 1-1.4 1.7-2.3 2 .5-1.2.3-2.6-.5-3.7C8.7 7.2 9.5 5.9 10 5z" fill="rgba(255,255,255,0.6)"/><rect x="9.2" y="11.5" width="1.6" height="3.5" rx="0.8" fill="white"/></svg></div>Arbo</div>
+    <div class="search-bar"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>Buscar local ou ocorrência...</div>
     <div class="topbar-actions">
-      <button class="icon-btn notif-btn">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-        <span class="notif-dot"></span>
-      </button>
+      <button class="icon-btn notif-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span class="notif-dot"></span></button>
       <button class="user-chip" onclick="navigate('perfil')">
-        <div class="user-chip-avatar">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-        </div>
+        <div class="user-chip-avatar"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div>
         <span id="mapa-user-label">você</span>
       </button>
     </div>
   </header>
 
-  <!-- Mapa Leaflet -->
   <div id="leaflet-map" style="flex:1;position:relative;z-index:1"></div>
 
   <!-- Legenda -->
   <div class="map-legend">
     <div class="legend-item"><span class="legend-dot" style="background:#D48A0C"></span>Não verificada</div>
     <div class="legend-item"><span class="legend-dot" style="background:#1E5C2F"></span>Procedente</div>
-    <div class="legend-item"><span class="legend-dot" style="background:#D63B2F"></span>Recusada</div>
+    <div class="legend-item"><span class="legend-dot" style="background:#1565C0"></span>Resolvida</div>
+    <button class="legend-toggle-btn" onclick="toggleResolvidas(this)">🔵 Mostrar resolvidas</button>
   </div>
 
-  <!-- FAB: Nova Denúncia -->
   <button class="fab" onclick="openModal()">
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
     Nova Denúncia
@@ -134,227 +170,109 @@
   <nav class="bottomnav" id="nav-mapa"></nav>
 </div>
 
-<!-- ══════════════════════════════════════════
-     TELA: MODERAÇÃO
-══════════════════════════════════════════ -->
+<!-- ══ TELA: MODERAÇÃO ══════════════════════════════════ -->
 <div class="screen" id="screen-moderacao">
   <header class="topbar">
-    <div class="logo" onclick="navigate('moderacao')">
-      <div class="logo-mark"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2L3 5v6c0 3.87 3.04 7.5 7 8.45C13.96 18.5 17 14.87 17 11V5L10 2z" fill="rgba(255,255,255,0.2)"/><path d="M10 5c-1.1 1.6-1.5 3.2-.8 4.7.5 1 1.4 1.7 2.3 2-.5-1.2-.3-2.6.5-3.7C11.3 7.2 10.5 5.9 10 5z" fill="white"/><path d="M10 5c1.1 1.6 1.5 3.2.8 4.7-.5 1-1.4 1.7-2.3 2 .5-1.2.3-2.6-.5-3.7C8.7 7.2 9.5 5.9 10 5z" fill="rgba(255,255,255,0.6)"/><rect x="9.2" y="11.5" width="1.6" height="3.5" rx="0.8" fill="white"/></svg></div>
-      Arbo
-    </div>
-    <div class="search-bar"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg> Buscar denúncia...</div>
+    <div class="logo"><div class="logo-mark"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2L3 5v6c0 3.87 3.04 7.5 7 8.45C13.96 18.5 17 14.87 17 11V5L10 2z" fill="rgba(255,255,255,0.2)"/><path d="M10 5c-1.1 1.6-1.5 3.2-.8 4.7.5 1 1.4 1.7 2.3 2-.5-1.2-.3-2.6.5-3.7C11.3 7.2 10.5 5.9 10 5z" fill="white"/><path d="M10 5c1.1 1.6 1.5 3.2.8 4.7-.5 1-1.4 1.7-2.3 2 .5-1.2.3-2.6-.5-3.7C8.7 7.2 9.5 5.9 10 5z" fill="rgba(255,255,255,0.6)"/><rect x="9.2" y="11.5" width="1.6" height="3.5" rx="0.8" fill="white"/></svg></div>Arbo</div>
+    <div class="search-bar"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>Buscar denúncia...</div>
     <div class="topbar-actions">
-      <div class="user-chip">
-        <div class="user-chip-avatar" style="background:var(--g700)">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        </div>
-        <span id="mod-org-label">Organização</span>
-      </div>
+      <div class="user-chip"><div class="user-chip-avatar" style="background:var(--g700)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><span id="mod-org-label">Organização</span></div>
     </div>
   </header>
 
   <div class="scroll-content"><div class="page-pad">
     <div class="page-header">
-      <div class="page-header-icon">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--g800)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-      </div>
-      <div>
-        <h1>Moderação</h1>
-        <p>Audite e valide as ocorrências reportadas pela comunidade</p>
-      </div>
+      <div class="page-header-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--g800)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+      <div><h1>Moderação</h1><p>Audite e valide as ocorrências reportadas pela comunidade</p></div>
     </div>
 
-    <!-- Estatísticas -->
     <div class="stat-row">
       <div class="stat-card">
-        <div class="stat-icon" style="background:var(--ybg)">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--y)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-        </div>
-        <div>
-          <div class="stat-num" id="s-analise">0</div>
-          <div class="stat-label">Em análise</div>
-        </div>
+        <div class="stat-icon" style="background:var(--ybg)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--y)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+        <div><div class="stat-num" id="s-analise">0</div><div class="stat-label">Em análise</div></div>
       </div>
       <div class="stat-card">
-        <div class="stat-icon" style="background:var(--g100)">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--g700)" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-        </div>
-        <div>
-          <div class="stat-num" id="s-proc">0</div>
-          <div class="stat-label">Procedentes</div>
-        </div>
+        <div class="stat-icon" style="background:var(--g100)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--g700)" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div><div class="stat-num" id="s-proc">0</div><div class="stat-label">Procedentes</div></div>
       </div>
       <div class="stat-card">
-        <div class="stat-icon" style="background:var(--rbg)">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--r)" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
-        </div>
-        <div>
-          <div class="stat-num" id="s-rec">0</div>
-          <div class="stat-label">Recusadas</div>
-        </div>
+        <div class="stat-icon" style="background:var(--rbg)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--r)" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg></div>
+        <div><div class="stat-num" id="s-rec">0</div><div class="stat-label">Recusadas</div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background:#E3F2FD"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1565C0" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <div><div class="stat-num" id="s-resolvida">0</div><div class="stat-label">Resolvidas</div></div>
       </div>
     </div>
 
-    <!-- Filtros -->
     <div class="filter-tabs">
       <button class="ftab active" onclick="filterCards('todas', this)">Todas</button>
       <button class="ftab" onclick="filterCards('analise', this)">Em análise</button>
       <button class="ftab" onclick="filterCards('proc', this)">Procedentes</button>
+      <button class="ftab" onclick="filterCards('resolvida', this)">Resolvidas</button>
       <button class="ftab" onclick="filterCards('rec', this)">Recusadas</button>
     </div>
 
-    <!-- Grid de cards -->
     <div class="den-grid" id="den-grid">
-      <div style="grid-column:1/-1;text-align:center;padding:30px;color:var(--muted)">
-        <div style="font-size:28px;margin-bottom:8px">⏳</div>Carregando denúncias...
-      </div>
+      <div style="grid-column:1/-1;text-align:center;padding:30px;color:var(--muted)"><div style="font-size:28px;margin-bottom:8px">⏳</div>Carregando denúncias...</div>
     </div>
   </div></div>
-
   <nav class="bottomnav" id="nav-moderacao"></nav>
 </div>
 
-<!-- ══════════════════════════════════════════
-     TELA: ONGs
-══════════════════════════════════════════ -->
+<!-- ══ TELA: ONGs ═══════════════════════════════════════ -->
 <div class="screen" id="screen-ongs">
   <header class="topbar">
     <div class="logo"><div class="logo-mark"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2L3 5v6c0 3.87 3.04 7.5 7 8.45C13.96 18.5 17 14.87 17 11V5L10 2z" fill="rgba(255,255,255,0.2)"/><path d="M10 5c-1.1 1.6-1.5 3.2-.8 4.7.5 1 1.4 1.7 2.3 2-.5-1.2-.3-2.6.5-3.7C11.3 7.2 10.5 5.9 10 5z" fill="white"/><path d="M10 5c1.1 1.6 1.5 3.2.8 4.7-.5 1-1.4 1.7-2.3 2 .5-1.2.3-2.6-.5-3.7C8.7 7.2 9.5 5.9 10 5z" fill="rgba(255,255,255,0.6)"/><rect x="9.2" y="11.5" width="1.6" height="3.5" rx="0.8" fill="white"/></svg></div>Arbo</div>
-    <div class="search-bar"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg> Buscar...</div>
-    <div class="topbar-actions">
-      <button class="user-chip" onclick="navigate('perfil')">
-        <div class="user-chip-avatar"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div>
-        <span id="ongs-user-label">você</span>
-      </button>
-    </div>
+    <div class="search-bar"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>Buscar...</div>
+    <div class="topbar-actions"><button class="user-chip" onclick="navigate('perfil')"><div class="user-chip-avatar"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div><span id="ongs-user-label">você</span></button></div>
   </header>
-
   <div class="scroll-content"><div class="page-pad">
     <div class="page-header">
-      <div class="page-header-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--g800)" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+      <div class="page-header-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--g800)" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
       <div><h1>Parceiros</h1><p>ONGs e órgãos que atuam na nossa rede</p></div>
     </div>
-
     <p class="section-head">Próximos mutirões</p>
     <div class="events-scroll">
-      <div class="event-card">
-        <p class="event-date">15 JUL • 8h às 12h</p>
-        <div class="event-icon-wrap"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--g800)" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
-        <p class="event-name">Limpeza do Parque Linear</p>
-        <p class="event-org">SOS Mata Atlântica</p>
-        <p class="event-conf">23 confirmados</p>
-        <button class="btn btn-primary" style="width:100%;font-size:12px;padding:7px">Participar</button>
-      </div>
-      <div class="event-card">
-        <p class="event-date">22 JUL • 9h às 13h</p>
-        <div class="event-icon-wrap">🌱</div>
-        <p class="event-name">Plantio no Tietê</p>
-        <p class="event-org">Instituto Água Viva</p>
-        <p class="event-conf">41 confirmados</p>
-        <button class="btn btn-primary" style="width:100%;font-size:12px;padding:7px">Participar</button>
-      </div>
-      <div class="event-card">
-        <p class="event-date">30 JUL • 7h às 11h</p>
-        <div class="event-icon-wrap">♻️</div>
-        <p class="event-name">Coleta seletiva Vila Madalena</p>
-        <p class="event-org">Recicla SP</p>
-        <p class="event-conf">12 confirmados</p>
-        <button class="btn btn-primary" style="width:100%;font-size:12px;padding:7px">Participar</button>
-      </div>
+      <div class="event-card"><p class="event-date">15 JUL • 8h às 12h</p><div class="event-icon-wrap"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--g800)" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><p class="event-name">Limpeza do Parque Linear</p><p class="event-org">SOS Mata Atlântica</p><p class="event-conf">23 confirmados</p><button class="btn btn-primary" style="width:100%;font-size:12px;padding:7px">Participar</button></div>
+      <div class="event-card"><p class="event-date">22 JUL • 9h às 13h</p><div class="event-icon-wrap">🌱</div><p class="event-name">Plantio no Tietê</p><p class="event-org">Instituto Água Viva</p><p class="event-conf">41 confirmados</p><button class="btn btn-primary" style="width:100%;font-size:12px;padding:7px">Participar</button></div>
+      <div class="event-card"><p class="event-date">30 JUL • 7h às 11h</p><div class="event-icon-wrap">♻️</div><p class="event-name">Coleta seletiva Vila Madalena</p><p class="event-org">Recicla SP</p><p class="event-conf">12 confirmados</p><button class="btn btn-primary" style="width:100%;font-size:12px;padding:7px">Participar</button></div>
     </div>
-
     <p class="section-head">ONGs parceiras</p>
     <div class="ong-card">
-      <div class="ong-header">
-        <div class="ong-avatar"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-        <div><p class="ong-name">SOS Mata Atlântica</p><p class="ong-loc">📍 São Paulo – SP</p></div>
-      </div>
+      <div class="ong-header"><div class="ong-avatar"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div><p class="ong-name">SOS Mata Atlântica</p><p class="ong-loc">📍 São Paulo – SP</p></div></div>
       <p class="ong-desc">Fundação dedicada à proteção e recuperação da Mata Atlântica. Atua em monitoramento, educação ambiental e pressão por políticas públicas.</p>
-      <div class="ong-stats">
-        <div class="ong-stat"><p class="ong-stat-n">847</p><p class="ong-stat-l">Denúncias auditadas</p></div>
-        <div class="ong-stat"><p class="ong-stat-n">34</p><p class="ong-stat-l">Mutirões realizados</p></div>
-        <div class="ong-stat"><p class="ong-stat-n">12k</p><p class="ong-stat-l">Apoiadores</p></div>
-      </div>
-      <div class="ong-actions">
-        <button class="btn btn-danger" style="flex:1;font-size:12px">Saiba mais</button>
-        <button class="btn btn-primary" style="flex:1;font-size:12px">Apoiar</button>
-      </div>
-    </div>
-    <div class="ong-card">
-      <div class="ong-header">
-        <div class="ong-avatar" style="background:var(--y)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
-        <div><p class="ong-name">Instituto Água Viva</p><p class="ong-loc">📍 Grande SP</p></div>
-      </div>
-      <p class="ong-desc">Instituto especializado em recuperação de corpos d'água e matas ciliares. Conduz análises de qualidade hídrica e recomposição vegetal.</p>
-      <div class="ong-stats">
-        <div class="ong-stat"><p class="ong-stat-n">312</p><p class="ong-stat-l">Denúncias auditadas</p></div>
-        <div class="ong-stat"><p class="ong-stat-n">18</p><p class="ong-stat-l">Mutirões realizados</p></div>
-        <div class="ong-stat"><p class="ong-stat-n">3.4k</p><p class="ong-stat-l">Apoiadores</p></div>
-      </div>
-      <div class="ong-actions">
-        <button class="btn btn-danger" style="flex:1;font-size:12px">Saiba mais</button>
-        <button class="btn btn-primary" style="flex:1;font-size:12px">Apoiar</button>
-      </div>
+      <div class="ong-stats"><div class="ong-stat"><p class="ong-stat-n">847</p><p class="ong-stat-l">Denúncias auditadas</p></div><div class="ong-stat"><p class="ong-stat-n">34</p><p class="ong-stat-l">Mutirões realizados</p></div><div class="ong-stat"><p class="ong-stat-n">12k</p><p class="ong-stat-l">Apoiadores</p></div></div>
+      <div class="ong-actions"><button class="btn btn-danger" style="flex:1;font-size:12px">Saiba mais</button><button class="btn btn-primary" style="flex:1;font-size:12px">Apoiar</button></div>
     </div>
   </div></div>
-
   <nav class="bottomnav" id="nav-ongs"></nav>
 </div>
 
-<!-- ══════════════════════════════════════════
-     TELA: PERFIL
-══════════════════════════════════════════ -->
+<!-- ══ TELA: PERFIL ═════════════════════════════════════ -->
 <div class="screen" id="screen-perfil">
   <header class="topbar">
     <div class="logo"><div class="logo-mark"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2L3 5v6c0 3.87 3.04 7.5 7 8.45C13.96 18.5 17 14.87 17 11V5L10 2z" fill="rgba(255,255,255,0.2)"/><path d="M10 5c-1.1 1.6-1.5 3.2-.8 4.7.5 1 1.4 1.7 2.3 2-.5-1.2-.3-2.6.5-3.7C11.3 7.2 10.5 5.9 10 5z" fill="white"/><path d="M10 5c1.1 1.6 1.5 3.2.8 4.7-.5 1-1.4 1.7-2.3 2 .5-1.2.3-2.6-.5-3.7C8.7 7.2 9.5 5.9 10 5z" fill="rgba(255,255,255,0.6)"/><rect x="9.2" y="11.5" width="1.6" height="3.5" rx="0.8" fill="white"/></svg></div>Arbo</div>
-    <div class="search-bar"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg> Buscar...</div>
-    <div class="topbar-actions"><button class="icon-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></button></div>
+    <div class="search-bar"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>Buscar...</div>
   </header>
-
   <div class="scroll-content"><div class="page-pad">
     <p style="font-size:17px;font-weight:700;margin-bottom:14px">Meu Perfil</p>
     <div class="profile-hero">
       <div class="profile-avatar"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div>
-      <div>
-        <p class="profile-name" id="perfil-name">—</p>
-        <p class="profile-since" id="perfil-since">Desde março de 2026</p>
-        <span class="profile-level" id="perfil-level">Nível 1</span>
-      </div>
-    </div>
-    <div class="profile-stats">
-      <div class="profile-stat"><div class="profile-stat-icon">⚠️</div><p class="profile-stat-n">0</p><p class="profile-stat-l">Denúncias</p></div>
-      <div class="profile-stat"><div class="profile-stat-icon">👥</div><p class="profile-stat-n">0</p><p class="profile-stat-l">Mutirões</p></div>
-      <div class="profile-stat"><div class="profile-stat-icon">🌿</div><p class="profile-stat-n">0</p><p class="profile-stat-l">Árvores</p></div>
-    </div>
-    <p style="font-size:15px;font-weight:700;margin-bottom:12px">Conquistas recentes</p>
-    <div class="ach-row">
-      <div class="ach-card"><div class="ach-icon">🌱</div><p class="ach-name">Primeiro passo</p><p class="ach-desc">Primeira denúncia registrada</p></div>
-      <div class="ach-card"><div class="ach-icon">🌳</div><p class="ach-name">Guardião verde</p><p class="ach-desc">Participou de 5 mutirões</p></div>
-      <div class="ach-card"><div class="ach-icon">🔥</div><p class="ach-name">Vigilante</p><p class="ach-desc">10 denúncias verificadas</p></div>
+      <div><p class="profile-name" id="perfil-name">—</p><p class="profile-since">Membro Arbo</p><span class="profile-level">Guardião Verde</span></div>
     </div>
     <div class="menu-list">
-      <div class="menu-item"><span class="menu-item-icon">📍</span><span class="menu-item-label">Minhas Denúncias</span><span class="menu-item-count">0</span><span class="menu-item-arrow">›</span></div>
-      <div class="menu-item"><span class="menu-item-icon">👥</span><span class="menu-item-label">Mutirões Participados</span><span class="menu-item-count">0</span><span class="menu-item-arrow">›</span></div>
-      <div class="menu-item"><span class="menu-item-icon">🏆</span><span class="menu-item-label">Todas as Conquistas</span><span class="menu-item-count">0</span><span class="menu-item-arrow">›</span></div>
-      <div class="menu-item"><span class="menu-item-icon">⚙️</span><span class="menu-item-label">Configurações</span><span class="menu-item-arrow">›</span></div>
       <div class="menu-item menu-item-danger" onclick="openProfileMenu()"><span class="menu-item-icon">🔄</span><span class="menu-item-label">Trocar tipo de conta</span><span class="menu-item-arrow">›</span></div>
       <div class="menu-item menu-item-danger" onclick="doLogout()"><span class="menu-item-icon">🚪</span><span class="menu-item-label">Sair da conta</span><span class="menu-item-arrow">›</span></div>
     </div>
   </div></div>
-
   <nav class="bottomnav" id="nav-perfil"></nav>
 </div>
 
-<!-- ══════════════════════════════════════════
-     MODAL: NOVA DENÚNCIA
-══════════════════════════════════════════ -->
+<!-- ══ MODAL: NOVA DENÚNCIA ═════════════════════════════ -->
 <div class="overlay" id="modal-nd">
   <div class="sheet">
-    <div class="sheet-header">
-      <h2>Nova Denúncia</h2>
-      <button class="sheet-close" onclick="closeModal()">✕</button>
-    </div>
+    <div class="sheet-header"><h2>Nova Denúncia</h2><button class="sheet-close" onclick="closeModal()">✕</button></div>
 
     <label class="form-label">Título da Ocorrência</label>
     <div class="input-wrap" style="margin-bottom:16px">
@@ -371,7 +289,6 @@
     </div>
 
     <label class="form-label">Adicionar Foto</label>
-    <!-- Input de arquivo real (oculto) -->
     <input type="file" id="foto-input" accept="image/*" style="display:none" onchange="onFotoSelecionada(event)">
     <div class="foto-drop" id="foto-drop" onclick="abrirSeletorFoto()">
       <div class="foto-drop-icon" id="foto-icon">📷</div>
@@ -383,40 +300,47 @@
     <textarea class="form-textarea" id="nd-desc" placeholder="Descreva o problema encontrado com o máximo de detalhes possível..."></textarea>
 
     <label class="form-label">Localização</label>
-    <div class="loc-row">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--g800)" stroke-width="2" style="flex-shrink:0"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
-      <div>
-        <span style="font-size:13px;font-weight:600;display:block">Usar localização atual (GPS)</span>
-        <small id="loc-status" style="font-size:11px;color:var(--muted)">Aguardando permissão de localização...</small>
+    <div class="loc-opcoes">
+      <div class="loc-row">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--g800)" stroke-width="2" style="flex-shrink:0"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+        <div style="flex:1">
+          <span style="font-size:13px;font-weight:600;display:block">Localização GPS automática</span>
+          <small id="loc-status" style="font-size:11px;color:var(--muted)">Aguardando localização...</small>
+        </div>
+        <button class="btn btn-danger" style="font-size:11px;padding:6px 10px;flex-shrink:0" onclick="obterLocalizacaoGPS()">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+          Atualizar
+        </button>
       </div>
+      <div style="text-align:center;font-size:11px;color:var(--muted);margin:6px 0">ou</div>
+      <button class="btn btn-danger btn-full" id="btn-selecionar-mapa" onclick="ativarModoLocMapa()" style="font-size:12px">
+        📍 Selecionar no mapa
+      </button>
     </div>
 
-    <button class="btn btn-primary btn-full" onclick="enviarDenuncia()">
+    <button class="btn btn-primary btn-full" style="margin-top:16px" onclick="enviarDenuncia()">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
       Enviar Denúncia
     </button>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════
-     MENU: TROCAR PERFIL
-══════════════════════════════════════════ -->
+<!-- ══ MODAL: TROCAR PERFIL ═════════════════════════════ -->
 <div class="overlay" id="modal-profile">
   <div class="sheet sheet-sm">
     <div class="sheet-header"><h2>Trocar tipo de conta</h2><button class="sheet-close" onclick="closeProfileMenu()">✕</button></div>
-    <p style="font-size:13px;color:var(--muted);margin-bottom:16px">Você será redirecionado ao selecionar.</p>
     <button class="profile-switch-btn" id="psw-usuario" onclick="navigate('mapa');closeProfileMenu()">
       <div class="psw-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div>
       <div><p class="psw-label">Usuário / Cidadão</p><p class="psw-desc">Acessa o mapa e faz denúncias</p></div>
       <span class="psw-check hidden">✓</span>
     </button>
     <button class="profile-switch-btn" id="psw-ong" onclick="navigate('moderacao');closeProfileMenu()">
-      <div class="psw-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+      <div class="psw-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
       <div><p class="psw-label">ONG</p><p class="psw-desc">Modera e valida ocorrências</p></div>
       <span class="psw-check hidden">✓</span>
     </button>
     <button class="profile-switch-btn" id="psw-orgao" onclick="navigate('moderacao');closeProfileMenu()">
-      <div class="psw-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg></div>
+      <div class="psw-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg></div>
       <div><p class="psw-label">Outro Órgão</p><p class="psw-desc">Fiscaliza ocorrências reportadas</p></div>
       <span class="psw-check hidden">✓</span>
     </button>
@@ -429,85 +353,27 @@
   </div>
 </div>
 
-<!-- Loading overlay global -->
+<!-- Loading overlay -->
 <div id="loading-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:500;align-items:center;justify-content:center;flex-direction:column;gap:14px">
   <div style="width:44px;height:44px;border:4px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite"></div>
   <p style="color:#fff;font-size:14px;font-weight:600">Carregando...</p>
 </div>
 
-<!-- Toast global -->
 <div class="toast" id="toast"></div>
 
-<!-- Animação do spinner -->
 <style>
-  @keyframes spin { to { transform: rotate(360deg); } }
-  .map-legend {
-    position: absolute; bottom: 72px; left: 14px; z-index: 10;
-    background: rgba(255,255,255,.92); backdrop-filter: blur(6px);
-    border-radius: 10px; padding: 8px 12px;
-    display: flex; flex-direction: column; gap: 5px;
-    box-shadow: 0 2px 10px rgba(0,0,0,.12);
-    font-size: 11px; font-weight: 600; color: #333;
-  }
-  .legend-item { display: flex; align-items: center; gap: 6px; }
-  .legend-dot  { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-
-  /* Pin styles */
-  .arbo-pin {
-    width: 36px; height: 36px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 2px 8px rgba(0,0,0,.3);
-    border: 2px solid rgba(255,255,255,.7);
-    transition: transform .15s;
-  }
-  .arbo-pin:hover { transform: scale(1.15); }
-
-  /* Popup styles */
-  .arbo-popup .leaflet-popup-content-wrapper {
-    border-radius: 14px; padding: 0; overflow: hidden;
-    box-shadow: 0 8px 30px rgba(0,0,0,.18);
-  }
-  .arbo-popup .leaflet-popup-content { margin: 0; width: 260px !important; }
-  .arbo-popup .leaflet-popup-tip-container { display: none; }
-  .popup-img {
-    width: 100%; height: 130px;
-    display: flex; align-items: center; justify-content: center;
-    overflow: hidden; background: #f0f0f0;
-  }
-  .popup-img img { width: 100%; height: 100%; object-fit: cover; }
-  .popup-body { padding: 12px; }
-  .popup-title { font-size: 13px; font-weight: 700; margin-bottom: 7px; line-height: 1.35; }
-  .popup-meta  { font-size: 11px; color: #637566; display: flex; flex-direction: column; gap: 3px; margin-bottom: 9px; }
-  .popup-badges { display: flex; gap: 5px; flex-wrap: wrap; }
-  .popup-badge  { font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 20px; }
-  .popup-badge-gray   { background: #EDEDED; color: #444; }
-  .popup-badge-yellow { background: #FFF8EC; color: #8A6000; }
-  .popup-badge-green  { background: #D6EAD9; color: #1E5C2F; }
-  .popup-badge-red    { background: #FDECEA; color: #C0392B; }
-
-  /* FAB */
-  .fab {
-    position: absolute; bottom: 72px; right: 14px; z-index: 10;
-    background: var(--g800); color: #fff;
-    border: none; border-radius: 28px; cursor: pointer;
-    display: flex; align-items: center; gap: 8px;
-    padding: 13px 20px; font-size: 14px; font-weight: 700;
-    font-family: inherit; box-shadow: 0 4px 16px rgba(30,92,47,.4);
-    transition: background .15s, transform .1s;
-  }
-  .fab:hover   { background: var(--g900); }
-  .fab:active  { transform: scale(.96); }
-
-  /* Popup badge red extra */
-  .popup-badge-red { background: #FDECEA; color: #C0392B; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.loc-opcoes { background:var(--g50);border-radius:var(--radius-sm);padding:12px;margin-bottom:16px; }
+.badge-blue { background:#E3F2FD;color:#1565C0; }
+.popup-badge-blue { background:#E3F2FD;color:#1565C0; }
+.btn-resolve { background:#1565C0;color:#fff;flex:1; }
+.btn-resolve:hover { background:#0D47A1; }
+.legend-toggle-btn { background:none;border:1px solid #1565C0;color:#1565C0;border-radius:20px;padding:3px 10px;font-size:10px;font-weight:600;cursor:pointer;margin-top:4px;font-family:inherit;transition:all .15s; }
+.legend-toggle-btn.active { background:#1565C0;color:#fff; }
 </style>
 
-<!-- CDNs -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-<!-- Variáveis de ambiente injetadas pela Vercel -->
-
-<!-- Arquivos do Arbo -->
 <script src="supabase-client.js"></script>
 <script src="data.js"></script>
 <script src="map.js"></script>
