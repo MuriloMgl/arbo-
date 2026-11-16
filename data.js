@@ -79,7 +79,7 @@ function escutarDenuncias(callback) {
     .on(
       "postgres_changes",
       { event: "*", schema: "public", table: "denuncias" },
-      (payload) => callback(payload.eventType, payload.new)
+      (payload) => callback(payload.eventType, payload.eventType === "DELETE" ? payload.old : payload.new)
     )
     .subscribe();
 }
@@ -120,7 +120,7 @@ function renderCardHTML(d) {
 
   // Foto ou emoji
   const thumb = d.img_url
-    ? `<img src="${esc(d.img_url)}" alt="${esc(d.titulo)}" class="den-thumb-photo">`
+    ? `<img src="${esc(d.img_url)}" alt="${esc(d.img_alt || 'Foto da ocorrência: ' + d.titulo)}" class="den-thumb-photo">`
     : `<div class="den-thumb-emoji">${visual.emoji}</div>`;
 
   const badgeClass = {
@@ -148,6 +148,10 @@ function renderCardHTML(d) {
   // Botões de ação conforme status
   const isAnalise  = d.status === "analise";
   const isProc     = d.status === "proc";
+  const botaoExcluir = `
+    <button class="btn btn-danger btn-del" type="button" aria-label="Excluir denúncia: ${titulo}" onclick="pedirExcluir('${id}')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+    </button>`;
   const acoes = isAnalise ? `
     <button class="btn btn-danger"  onclick="recusar('${id}')">
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"/></svg>
@@ -160,7 +164,7 @@ function renderCardHTML(d) {
     <button class="btn btn-resolve" onclick="resolverDenuncia('${id}')">
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
       Marcar Resolvida
-    </button>` : `<p style="font-size:11px;color:var(--muted);text-align:center;width:100%">Sem ações disponíveis</p>`;
+    </button>` : `<p style="font-size:calc(11px*var(--fs,1));color:var(--muted);text-align:center;flex:1;align-self:center">Sem ações disponíveis</p>`;
 
   return `
     <div class="den-card" data-status="${esc(d.status)}" id="card-${id}">
@@ -188,7 +192,7 @@ function renderCardHTML(d) {
             ${tempo}
           </li>
         </ul>
-        <div class="den-actions">${acoes}</div>
+        <div class="den-actions">${acoes}${botaoExcluir}</div>
       </div>
     </div>`;
 }
@@ -200,9 +204,9 @@ function renderCards(lista) {
   if (!lista || lista.length === 0) {
     grid.innerHTML = `
       <div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--muted)">
-        <div style="font-size:40px;margin-bottom:12px">🌿</div>
+        <div style="font-size:calc(40px*var(--fs,1));margin-bottom:12px">🌿</div>
         <p style="font-weight:600">Nenhuma denúncia encontrada</p>
-        <p style="font-size:12px;margin-top:4px">Novas ocorrências aparecerão aqui em tempo real</p>
+        <p style="font-size:calc(12px*var(--fs,1));margin-top:4px">Novas ocorrências aparecerão aqui em tempo real</p>
       </div>`;
     return;
   }

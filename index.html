@@ -4,6 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Arbo — Plataforma Socioambiental</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="shortcut icon" href="favicon.ico">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <script>try{var _p=JSON.parse(localStorage.getItem("arbo-a11y")||"{}"),_t=_p.theme||"auto";if(!_p.hc&&(_t==="dark"||(_t==="auto"&&matchMedia("(prefers-color-scheme: dark)").matches)))document.documentElement.classList.add("dark");}catch(e){}</script>
+  <meta name="theme-color" content="#1E5C2F">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -11,69 +18,39 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+<a class="skip-link" href="#main-target">Pular para o conteúdo</a>
 
 <!-- ══ TELA: LOGIN ══════════════════════════════════════ -->
 <div class="screen active" id="screen-login">
   <div class="login-left">
-    <div class="logo logo-white">
-      <div class="logo-mark"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2L3 5v6c0 3.87 3.04 7.5 7 8.45C13.96 18.5 17 14.87 17 11V5L10 2z" fill="rgba(255,255,255,0.2)"/><path d="M10 5c-1.1 1.6-1.5 3.2-.8 4.7.5 1 1.4 1.7 2.3 2-.5-1.2-.3-2.6.5-3.7C11.3 7.2 10.5 5.9 10 5z" fill="white"/><path d="M10 5c1.1 1.6 1.5 3.2.8 4.7-.5 1-1.4 1.7-2.3 2 .5-1.2.3-2.6-.5-3.7C8.7 7.2 9.5 5.9 10 5z" fill="rgba(255,255,255,0.6)"/><rect x="9.2" y="11.5" width="1.6" height="3.5" rx="0.8" fill="white"/></svg></div>
-      Arbo
-    </div>
+    <div class="logo logo-white"><div class="logo-mark"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 21v-9" stroke="#fff" stroke-width="2" stroke-linecap="round"/><path d="M12 13c0-4-2.5-6-7-6 0 4 2 6 7 6z" fill="#fff"/><path d="M12 11c0-4 2.5-6 7-6 0 4-2 6-7 6z" fill="#fff" fill-opacity=".8"/></svg></div>Arbo</div>
     <div class="login-hero">
-      <div class="login-badge">Plataforma Socioambiental</div>
-      <h2 class="login-headline">Conectando denúncias ambientais a quem pode agir</h2>
-      <p class="login-sub">Cidadãos relatam ocorrências, ONGs moderam e transformam em ações, e órgãos públicos acompanham a fiscalização — tudo em um só lugar.</p>
-      <ul class="login-features">
-        <li class="login-feature"><div class="login-feature-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg></div>Mapeamento de ocorrências em tempo real</li>
-        <li class="login-feature"><div class="login-feature-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>Moderação e validação por organizações parceiras</li>
-        <li class="login-feature"><div class="login-feature-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>Mutirões e ações colaborativas de impacto</li>
-      </ul>
+      <p class="login-eyebrow">Natureza em movimento</p>
+      <h2 class="login-headline">Mais áreas verdes.<br><span class="login-accent">Um futuro melhor.</span></h2>
+      <p class="login-sub">Conectamos pessoas, tecnologia e natureza para preservar o que realmente importa.</p>
     </div>
-    <p class="login-footer">© 2026 Arbo. Todos os direitos reservados.</p>
+    <p class="login-footer">Juntos por cidades mais verdes.</p>
   </div>
-
   <div class="login-right">
     <div class="login-box">
-      <h1>Acesse sua conta</h1>
-      <p class="login-box-sub">Selecione seu perfil para continuar</p>
-
+      <p class="login-eyebrow dark">Bem-vindo de volta</p>
+      <h1>Bom ter você por aqui.</h1>
+      <p class="login-box-sub">Entre na sua conta e faça parte da transformação dos espaços verdes.</p>
       <div class="profile-selector">
-        <button class="profile-option selected" id="popt-usuario" data-perfil="usuario" onclick="selectProfile('usuario')">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-          Usuário
-        </button>
-        <button class="profile-option" id="popt-ong" data-perfil="ong" onclick="selectProfile('ong')">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-          ONG
-        </button>
-        <button class="profile-option" id="popt-orgao" data-perfil="orgao" onclick="selectProfile('orgao')">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>
-          Órgão
-        </button>
+        <button class="profile-option selected" id="popt-usuario" data-perfil="usuario" onclick="selectProfile('usuario')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>Usuário</button>
+        <button class="profile-option" id="popt-ong" data-perfil="ong" onclick="selectProfile('ong')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>ONG</button>
+        <button class="profile-option" id="popt-orgao" data-perfil="orgao" onclick="selectProfile('orgao')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>Órgão</button>
       </div>
       <p class="profile-desc" id="profile-desc">Registre e acompanhe denúncias ambientais</p>
-
-      <label class="form-label">E-mail</label>
-      <div class="input-wrap">
-        <span class="input-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></span>
-        <input type="email" class="form-input" id="login-email" placeholder="voce@exemplo.com" />
-      </div>
-
-      <label class="form-label">Senha</label>
-      <div class="input-wrap">
-        <span class="input-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
-        <input type="password" class="form-input" id="login-senha" placeholder="Sua senha" />
-        <span class="input-suffix" onclick="toggleSenha('login-senha')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></span>
-      </div>
-
-      <div class="login-options">
-        <label class="remember-label"><input type="checkbox"> Lembrar de mim</label>
-        <a class="login-link">Esqueci a senha</a>
-      </div>
-
-      <button class="btn btn-primary btn-full" id="login-btn" onclick="doLogin()">Entrar como Usuário →</button>
-      <p class="login-register">Não tem uma conta? <a class="login-link" onclick="mostrarCadastro()">Cadastre-se</a></p>
+      <label class="form-label" for="login-email">E-mail</label>
+      <div class="input-wrap"><span class="input-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></span><input type="email" class="form-input" id="login-email" placeholder="voce@exemplo.com"></div>
+      <div class="label-row"><label class="form-label" for="login-senha">Senha</label><a class="login-link" onclick="mostrarEsqueci()">Esqueceu a senha?</a></div>
+      <div class="input-wrap"><span class="input-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span><input type="password" class="form-input" id="login-senha" placeholder="Sua senha"><span class="input-suffix" onclick="toggleSenha('login-senha')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></span></div>
+      <button class="btn btn-primary btn-full btn-lg" id="login-btn" onclick="doLogin()">Entrar na minha conta <span aria-hidden="true">→</span></button>
+      <p class="login-register">Ainda não tem uma conta? <a class="login-link" onclick="mostrarCadastro()">Cadastre-se</a></p>
+      <p class="login-divider"><span>Pequenas ações. Grandes mudanças.</span></p>
     </div>
+    <p class="login-foot-right">Cuidar do verde é cuidar do nosso futuro.</p>
   </div>
 </div>
 
@@ -81,70 +58,122 @@
 <div class="screen" id="screen-cadastro">
   <div class="login-left">
     <div class="logo logo-white">
-      <div class="logo-mark"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2L3 5v6c0 3.87 3.04 7.5 7 8.45C13.96 18.5 17 14.87 17 11V5L10 2z" fill="rgba(255,255,255,0.2)"/><path d="M10 5c-1.1 1.6-1.5 3.2-.8 4.7.5 1 1.4 1.7 2.3 2-.5-1.2-.3-2.6.5-3.7C11.3 7.2 10.5 5.9 10 5z" fill="white"/><path d="M10 5c1.1 1.6 1.5 3.2.8 4.7-.5 1-1.4 1.7-2.3 2 .5-1.2.3-2.6-.5-3.7C8.7 7.2 9.5 5.9 10 5z" fill="rgba(255,255,255,0.6)"/><rect x="9.2" y="11.5" width="1.6" height="3.5" rx="0.8" fill="white"/></svg></div>
+      <div class="logo-mark"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 21v-9" stroke="#fff" stroke-width="2" stroke-linecap="round"/><path d="M12 13c0-4-2.5-6-7-6 0 4 2 6 7 6z" fill="#fff"/><path d="M12 11c0-4 2.5-6 7-6 0 4-2 6-7 6z" fill="#fff" fill-opacity=".8"/></svg></div>
       Arbo
     </div>
     <div class="login-hero">
       <div class="login-badge">Crie sua conta</div>
       <h2 class="login-headline">Faça parte da maior rede de proteção ambiental colaborativa</h2>
-      <p class="login-sub">Junte-se a cidadãos, ONGs e órgãos públicos que já estão fazendo a diferença no meio ambiente.</p>
+      <p class="login-sub">Junte-se a cidadãos, ONGs e órgãos públicos que já estão fazendo a diferença.</p>
     </div>
     <p class="login-footer">© 2026 Arbo. Todos os direitos reservados.</p>
   </div>
-
-  <div class="login-right" style="align-items:flex-start;padding-top:40px;overflow-y:auto">
+  <div class="login-right">
     <div class="login-box">
       <h1>Criar conta</h1>
       <p class="login-box-sub">Escolha seu tipo de perfil</p>
-
       <div class="profile-selector">
-        <button class="profile-option selected" id="cad-popt-usuario" data-perfil="usuario" onclick="selectCadPerfil(this, 'usuario')">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-          Usuário
+        <button class="profile-option selected" id="cad-popt-usuario" onclick="selectCadPerfil(this,'usuario')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>Usuário
         </button>
-        <button class="profile-option" id="cad-popt-ong" data-perfil="ong" onclick="selectCadPerfil(this, 'ong')">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-          ONG
+        <button class="profile-option" id="cad-popt-ong" onclick="selectCadPerfil(this,'ong')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>ONG
         </button>
-        <button class="profile-option" id="cad-popt-orgao" data-perfil="orgao" onclick="selectCadPerfil(this, 'orgao')">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>
-          Órgão
+        <button class="profile-option" id="cad-popt-orgao" onclick="selectCadPerfil(this,'orgao')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>Órgão
         </button>
       </div>
       <input type="hidden" id="cad-tipo-val" value="usuario">
-
       <label class="form-label">Nome completo</label>
       <div class="input-wrap">
         <span class="input-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></span>
         <input type="text" class="form-input" id="cad-nome" placeholder="Seu nome ou nome da organização" />
       </div>
-
       <label class="form-label">E-mail</label>
       <div class="input-wrap">
         <span class="input-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></span>
         <input type="email" class="form-input" id="cad-email" placeholder="voce@exemplo.com" />
       </div>
-
       <label class="form-label">Senha</label>
       <div class="input-wrap">
         <span class="input-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
         <input type="password" class="form-input" id="cad-senha" placeholder="Mínimo 6 caracteres" />
         <span class="input-suffix" onclick="toggleSenha('cad-senha')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></span>
       </div>
-
       <button class="btn btn-primary btn-full" onclick="doCadastro()">Criar conta →</button>
       <p class="login-register">Já tem uma conta? <a class="login-link" onclick="voltarLogin()">Entrar</a></p>
     </div>
   </div>
 </div>
 
+<!-- ══ TELA: CONFIRMAÇÃO DE E-MAIL ══════════════════════ -->
+<div class="screen" id="screen-confirmacao">
+  <div class="auth-simple-screen">
+    <div class="logo" style="margin-bottom:32px">
+      <div class="logo-mark"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 21v-9" stroke="#fff" stroke-width="2" stroke-linecap="round"/><path d="M12 13c0-4-2.5-6-7-6 0 4 2 6 7 6z" fill="#fff"/><path d="M12 11c0-4 2.5-6 7-6 0 4-2 6-7 6z" fill="#fff" fill-opacity=".8"/></svg></div>
+      Arbo
+    </div>
+    <div style="font-size:calc(56px*var(--fs,1));margin-bottom:20px">📬</div>
+    <h1 style="font-size:calc(22px*var(--fs,1));font-weight:800;margin-bottom:10px">Verifique seu e-mail</h1>
+    <p style="color:var(--muted);font-size:calc(14px*var(--fs,1));line-height:1.6;margin-bottom:6px">Enviamos um link de confirmação para:</p>
+    <p style="font-weight:700;font-size:calc(15px*var(--fs,1));margin-bottom:24px" id="conf-email">—</p>
+    <p style="color:var(--muted);font-size:calc(13px*var(--fs,1));margin-bottom:28px">Clique no link do e-mail para ativar sua conta e fazer login.</p>
+    <button class="btn btn-primary btn-full" onclick="voltarLogin()">Voltar ao login</button>
+  </div>
+</div>
+
+<!-- ══ TELA: ESQUECI A SENHA ════════════════════════════ -->
+<div class="screen" id="screen-esqueci">
+  <div class="auth-simple-screen">
+    <div class="logo" style="margin-bottom:32px">
+      <div class="logo-mark"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 21v-9" stroke="#fff" stroke-width="2" stroke-linecap="round"/><path d="M12 13c0-4-2.5-6-7-6 0 4 2 6 7 6z" fill="#fff"/><path d="M12 11c0-4 2.5-6 7-6 0 4-2 6-7 6z" fill="#fff" fill-opacity=".8"/></svg></div>
+      Arbo
+    </div>
+    <div style="font-size:calc(56px*var(--fs,1));margin-bottom:20px">🔑</div>
+    <h1 style="font-size:calc(22px*var(--fs,1));font-weight:800;margin-bottom:10px">Redefinir senha</h1>
+    <p style="color:var(--muted);font-size:calc(14px*var(--fs,1));line-height:1.6;margin-bottom:24px">Informe seu e-mail e enviaremos um link para redefinir sua senha.</p>
+    <label class="form-label">E-mail cadastrado</label>
+    <div class="input-wrap" style="margin-bottom:20px">
+      <span class="input-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></span>
+      <input type="email" class="form-input" id="reset-email" placeholder="voce@exemplo.com" />
+    </div>
+    <button class="btn btn-primary btn-full" onclick="doEsqueciSenha()">Enviar link de redefinição</button>
+    <p class="login-register" style="margin-top:16px"><a class="login-link" onclick="voltarLogin()">← Voltar ao login</a></p>
+  </div>
+</div>
+
 <!-- ══ TELA: MAPA ═══════════════════════════════════════ -->
+<div class="screen" id="screen-novasenha">
+  <div class="auth-simple-screen">
+    <div style="font-size:calc(56px*var(--fs,1));margin-bottom:20px" aria-hidden="true">🔒</div>
+    <h1 style="font-size:calc(22px*var(--fs,1));font-weight:800;margin-bottom:10px">Criar nova senha</h1>
+    <p style="color:var(--muted);font-size:calc(14px*var(--fs,1));line-height:1.6;margin-bottom:24px">Escolha uma nova senha para a sua conta.</p>
+    <label class="form-label" for="nova-senha">Nova senha</label>
+    <div class="input-wrap"><input type="password" class="form-input" id="nova-senha" autocomplete="new-password" placeholder="Mínimo 6 caracteres" style="padding-left:12px"></div>
+    <label class="form-label" for="nova-senha2">Repita a nova senha</label>
+    <div class="input-wrap" style="margin-bottom:20px"><input type="password" class="form-input" id="nova-senha2" autocomplete="new-password" placeholder="Repita a senha" style="padding-left:12px"></div>
+    <button class="btn btn-primary btn-full" onclick="doNovaSenha()">Salvar nova senha</button>
+  </div>
+</div>
+
 <div class="screen" id="screen-mapa">
+  <!-- Banner fixo para seleção de local no mapa -->
+  <div id="map-loc-banner" style="display:none;position:absolute;top:0;left:0;right:0;z-index:1000;background:var(--g800);color:#fff;padding:14px 20px;align-items:center;justify-content:space-between;gap:12px;box-shadow:0 2px 12px rgba(0,0,0,.3)">
+    <div style="display:flex;align-items:center;gap:10px">
+      <span style="font-size:calc(20px*var(--fs,1))">📍</span>
+      <div>
+        <p style="font-weight:700;font-size:calc(14px*var(--fs,1))">Clique no mapa para marcar o local</p>
+        <p style="font-size:calc(11px*var(--fs,1));opacity:.8">Toque no ponto exato da ocorrência</p>
+      </div>
+    </div>
+    <button onclick="cancelarLocMapa()" style="background:rgba(255,255,255,.2);border:none;color:#fff;border-radius:8px;padding:8px 14px;font-size:calc(13px*var(--fs,1));font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap">✕ Cancelar</button>
+  </div>
+
   <header class="topbar">
-    <div class="logo"><div class="logo-mark"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2L3 5v6c0 3.87 3.04 7.5 7 8.45C13.96 18.5 17 14.87 17 11V5L10 2z" fill="rgba(255,255,255,0.2)"/><path d="M10 5c-1.1 1.6-1.5 3.2-.8 4.7.5 1 1.4 1.7 2.3 2-.5-1.2-.3-2.6.5-3.7C11.3 7.2 10.5 5.9 10 5z" fill="white"/><path d="M10 5c1.1 1.6 1.5 3.2.8 4.7-.5 1-1.4 1.7-2.3 2 .5-1.2.3-2.6-.5-3.7C8.7 7.2 9.5 5.9 10 5z" fill="rgba(255,255,255,0.6)"/><rect x="9.2" y="11.5" width="1.6" height="3.5" rx="0.8" fill="white"/></svg></div>Arbo</div>
-    <div class="search-bar"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>Buscar local ou ocorrência...</div>
+    <div class="logo"><div class="logo-mark"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 21v-9" stroke="#fff" stroke-width="2" stroke-linecap="round"/><path d="M12 13c0-4-2.5-6-7-6 0 4 2 6 7 6z" fill="#fff"/><path d="M12 11c0-4 2.5-6 7-6 0 4-2 6-7 6z" fill="#fff" fill-opacity=".8"/></svg></div>Arbo</div>
+    <label class="search-bar"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><input type="search" class="search-input" placeholder="Buscar local ou ocorrência..." aria-label="Buscar" oninput="buscar(this.value)"></label>
     <div class="topbar-actions">
-      <button class="icon-btn notif-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span class="notif-dot"></span></button>
+      
       <button class="user-chip" onclick="navigate('perfil')">
         <div class="user-chip-avatar"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div>
         <span id="mapa-user-label">você</span>
@@ -154,12 +183,11 @@
 
   <div id="leaflet-map" style="flex:1;position:relative;z-index:1"></div>
 
-  <!-- Legenda -->
-  <div class="map-legend">
-    <div class="legend-item"><span class="legend-dot" style="background:#D48A0C"></span>Não verificada</div>
-    <div class="legend-item"><span class="legend-dot" style="background:#1E5C2F"></span>Procedente</div>
-    <div class="legend-item"><span class="legend-dot" style="background:#1565C0"></span>Resolvida</div>
-    <button class="legend-toggle-btn" onclick="toggleResolvidas(this)">🔵 Mostrar resolvidas</button>
+  <div class="map-legend"><p class="legend-title">Legenda</p>
+    <div class="legend-item"><span class="legend-dot dot-analise"></span>Não verificada</div>
+    <div class="legend-item"><span class="legend-dot dot-proc"></span>Procedente</div>
+    <div class="legend-item"><span class="legend-dot dot-resolvida"></span>Resolvida</div>
+    <button class="legend-toggle-btn" onclick="toggleResolvidas(this)">🟢 Mostrar resolvidas</button>
   </div>
 
   <button class="fab" onclick="openModal()">
@@ -173,38 +201,23 @@
 <!-- ══ TELA: MODERAÇÃO ══════════════════════════════════ -->
 <div class="screen" id="screen-moderacao">
   <header class="topbar">
-    <div class="logo"><div class="logo-mark"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2L3 5v6c0 3.87 3.04 7.5 7 8.45C13.96 18.5 17 14.87 17 11V5L10 2z" fill="rgba(255,255,255,0.2)"/><path d="M10 5c-1.1 1.6-1.5 3.2-.8 4.7.5 1 1.4 1.7 2.3 2-.5-1.2-.3-2.6.5-3.7C11.3 7.2 10.5 5.9 10 5z" fill="white"/><path d="M10 5c1.1 1.6 1.5 3.2.8 4.7-.5 1-1.4 1.7-2.3 2 .5-1.2.3-2.6-.5-3.7C8.7 7.2 9.5 5.9 10 5z" fill="rgba(255,255,255,0.6)"/><rect x="9.2" y="11.5" width="1.6" height="3.5" rx="0.8" fill="white"/></svg></div>Arbo</div>
-    <div class="search-bar"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>Buscar denúncia...</div>
+    <div class="logo"><div class="logo-mark"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 21v-9" stroke="#fff" stroke-width="2" stroke-linecap="round"/><path d="M12 13c0-4-2.5-6-7-6 0 4 2 6 7 6z" fill="#fff"/><path d="M12 11c0-4 2.5-6 7-6 0 4-2 6-7 6z" fill="#fff" fill-opacity=".8"/></svg></div>Arbo</div>
+    <label class="search-bar"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><input type="search" class="search-input" placeholder="Buscar denúncia..." aria-label="Buscar" oninput="buscar(this.value)"></label>
     <div class="topbar-actions">
       <div class="user-chip"><div class="user-chip-avatar" style="background:var(--g700)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><span id="mod-org-label">Organização</span></div>
     </div>
   </header>
-
   <div class="scroll-content"><div class="page-pad">
     <div class="page-header">
       <div class="page-header-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--g800)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
       <div><h1>Moderação</h1><p>Audite e valide as ocorrências reportadas pela comunidade</p></div>
     </div>
-
     <div class="stat-row">
-      <div class="stat-card">
-        <div class="stat-icon" style="background:var(--ybg)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--y)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
-        <div><div class="stat-num" id="s-analise">0</div><div class="stat-label">Em análise</div></div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon" style="background:var(--g100)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--g700)" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div>
-        <div><div class="stat-num" id="s-proc">0</div><div class="stat-label">Procedentes</div></div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon" style="background:var(--rbg)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--r)" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg></div>
-        <div><div class="stat-num" id="s-rec">0</div><div class="stat-label">Recusadas</div></div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon" style="background:#E3F2FD"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1565C0" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-        <div><div class="stat-num" id="s-resolvida">0</div><div class="stat-label">Resolvidas</div></div>
-      </div>
+      <div class="stat-card"><div class="stat-icon" style="background:var(--ybg)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--y)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div><div class="stat-num" id="s-analise">0</div><div class="stat-label">Em análise</div></div></div>
+      <div class="stat-card"><div class="stat-icon" style="background:#E3F2FD"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1565C0" stroke-width="2" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></div><div><div class="stat-num" id="s-proc">0</div><div class="stat-label">Procedentes</div></div></div>
+      <div class="stat-card"><div class="stat-icon" style="background:var(--rbg)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--r)" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg></div><div><div class="stat-num" id="s-rec">0</div><div class="stat-label">Recusadas</div></div></div>
+      <div class="stat-card"><div class="stat-icon" style="background:var(--g100)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--g800)" stroke-width="2" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div><div class="stat-num" id="s-resolvida">0</div><div class="stat-label">Resolvidas</div></div></div>
     </div>
-
     <div class="filter-tabs">
       <button class="ftab active" onclick="filterCards('todas', this)">Todas</button>
       <button class="ftab" onclick="filterCards('analise', this)">Em análise</button>
@@ -212,9 +225,8 @@
       <button class="ftab" onclick="filterCards('resolvida', this)">Resolvidas</button>
       <button class="ftab" onclick="filterCards('rec', this)">Recusadas</button>
     </div>
-
     <div class="den-grid" id="den-grid">
-      <div style="grid-column:1/-1;text-align:center;padding:30px;color:var(--muted)"><div style="font-size:28px;margin-bottom:8px">⏳</div>Carregando denúncias...</div>
+      <div style="grid-column:1/-1;text-align:center;padding:30px;color:var(--muted)"><div style="font-size:calc(28px*var(--fs,1));margin-bottom:8px">⏳</div>Carregando denúncias...</div>
     </div>
   </div></div>
   <nav class="bottomnav" id="nav-moderacao"></nav>
@@ -223,63 +235,78 @@
 <!-- ══ TELA: ONGs ═══════════════════════════════════════ -->
 <div class="screen" id="screen-ongs">
   <header class="topbar">
-    <div class="logo"><div class="logo-mark"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2L3 5v6c0 3.87 3.04 7.5 7 8.45C13.96 18.5 17 14.87 17 11V5L10 2z" fill="rgba(255,255,255,0.2)"/><path d="M10 5c-1.1 1.6-1.5 3.2-.8 4.7.5 1 1.4 1.7 2.3 2-.5-1.2-.3-2.6.5-3.7C11.3 7.2 10.5 5.9 10 5z" fill="white"/><path d="M10 5c1.1 1.6 1.5 3.2.8 4.7-.5 1-1.4 1.7-2.3 2 .5-1.2.3-2.6-.5-3.7C8.7 7.2 9.5 5.9 10 5z" fill="rgba(255,255,255,0.6)"/><rect x="9.2" y="11.5" width="1.6" height="3.5" rx="0.8" fill="white"/></svg></div>Arbo</div>
-    <div class="search-bar"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>Buscar...</div>
-    <div class="topbar-actions"><button class="user-chip" onclick="navigate('perfil')"><div class="user-chip-avatar"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div><span id="ongs-user-label">você</span></button></div>
+    <div class="logo"><div class="logo-mark"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 21v-9" stroke="#fff" stroke-width="2" stroke-linecap="round"/><path d="M12 13c0-4-2.5-6-7-6 0 4 2 6 7 6z" fill="#fff"/><path d="M12 11c0-4 2.5-6 7-6 0 4-2 6-7 6z" fill="#fff" fill-opacity=".8"/></svg></div>Arbo</div>
+    <label class="search-bar"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><input type="search" class="search-input" placeholder="Buscar ONG ou mutirão..." aria-label="Buscar ONG ou mutirão" oninput="buscar(this.value)"></label>
+    <div class="topbar-actions"><button type="button" class="user-chip-avatar avatar-btn" aria-label="Meu perfil" onclick="navigate('perfil')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></button></div>
   </header>
-  <div class="scroll-content"><div class="page-pad">
-    <div class="page-header">
-      <div class="page-header-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--g800)" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
-      <div><h1>Parceiros</h1><p>ONGs e órgãos que atuam na nossa rede</p></div>
+  <div class="scroll-content">
+    <div class="ongs-head"><div class="ongs-wrap"><h1>ONGs Parceiras</h1><p>Conheça as organizações que transformam denúncias em ações.</p></div></div>
+    <div class="ongs-wrap ongs-body">
+      <section aria-labelledby="mut-h"><h2 class="ongs-h2" id="mut-h">Próximos mutirões</h2><div class="mut-grid" id="ongs-mut"><p class="ongs-vazio">Carregando…</p></div></section>
+      <section aria-labelledby="org-h"><h2 class="ongs-h2" id="org-h">Organizações</h2><div id="ongs-org"></div></section>
     </div>
-    <p class="section-head">Próximos mutirões</p>
-    <div class="events-scroll">
-      <div class="event-card"><p class="event-date">15 JUL • 8h às 12h</p><div class="event-icon-wrap"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--g800)" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><p class="event-name">Limpeza do Parque Linear</p><p class="event-org">SOS Mata Atlântica</p><p class="event-conf">23 confirmados</p><button class="btn btn-primary" style="width:100%;font-size:12px;padding:7px">Participar</button></div>
-      <div class="event-card"><p class="event-date">22 JUL • 9h às 13h</p><div class="event-icon-wrap">🌱</div><p class="event-name">Plantio no Tietê</p><p class="event-org">Instituto Água Viva</p><p class="event-conf">41 confirmados</p><button class="btn btn-primary" style="width:100%;font-size:12px;padding:7px">Participar</button></div>
-      <div class="event-card"><p class="event-date">30 JUL • 7h às 11h</p><div class="event-icon-wrap">♻️</div><p class="event-name">Coleta seletiva Vila Madalena</p><p class="event-org">Recicla SP</p><p class="event-conf">12 confirmados</p><button class="btn btn-primary" style="width:100%;font-size:12px;padding:7px">Participar</button></div>
-    </div>
-    <p class="section-head">ONGs parceiras</p>
-    <div class="ong-card">
-      <div class="ong-header"><div class="ong-avatar"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div><p class="ong-name">SOS Mata Atlântica</p><p class="ong-loc">📍 São Paulo – SP</p></div></div>
-      <p class="ong-desc">Fundação dedicada à proteção e recuperação da Mata Atlântica. Atua em monitoramento, educação ambiental e pressão por políticas públicas.</p>
-      <div class="ong-stats"><div class="ong-stat"><p class="ong-stat-n">847</p><p class="ong-stat-l">Denúncias auditadas</p></div><div class="ong-stat"><p class="ong-stat-n">34</p><p class="ong-stat-l">Mutirões realizados</p></div><div class="ong-stat"><p class="ong-stat-n">12k</p><p class="ong-stat-l">Apoiadores</p></div></div>
-      <div class="ong-actions"><button class="btn btn-danger" style="flex:1;font-size:12px">Saiba mais</button><button class="btn btn-primary" style="flex:1;font-size:12px">Apoiar</button></div>
-    </div>
-  </div></div>
+  </div>
   <nav class="bottomnav" id="nav-ongs"></nav>
 </div>
 
 <!-- ══ TELA: PERFIL ═════════════════════════════════════ -->
 <div class="screen" id="screen-perfil">
-  <header class="topbar">
-    <div class="logo"><div class="logo-mark"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2L3 5v6c0 3.87 3.04 7.5 7 8.45C13.96 18.5 17 14.87 17 11V5L10 2z" fill="rgba(255,255,255,0.2)"/><path d="M10 5c-1.1 1.6-1.5 3.2-.8 4.7.5 1 1.4 1.7 2.3 2-.5-1.2-.3-2.6.5-3.7C11.3 7.2 10.5 5.9 10 5z" fill="white"/><path d="M10 5c1.1 1.6 1.5 3.2.8 4.7-.5 1-1.4 1.7-2.3 2 .5-1.2.3-2.6-.5-3.7C8.7 7.2 9.5 5.9 10 5z" fill="rgba(255,255,255,0.6)"/><rect x="9.2" y="11.5" width="1.6" height="3.5" rx="0.8" fill="white"/></svg></div>Arbo</div>
-    <div class="search-bar"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>Buscar...</div>
-  </header>
-  <div class="scroll-content"><div class="page-pad">
-    <p style="font-size:17px;font-weight:700;margin-bottom:14px">Meu Perfil</p>
-    <div class="profile-hero">
-      <div class="profile-avatar"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div>
-      <div><p class="profile-name" id="perfil-name">—</p><p class="profile-since">Membro Arbo</p><span class="profile-level">Guardião Verde</span></div>
+  <div class="scroll-content">
+    <div class="perfil-head">
+      <h1 class="perfil-title">Meu Perfil</h1>
+      <div class="perfil-user">
+        <div class="profile-avatar" id="perfil-avatar" aria-label="Alterar foto de perfil" onclick="document.getElementById('avatar-input').click()"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div>
+        <div>
+          <p class="profile-name" id="perfil-name">—</p>
+          <p class="profile-since" id="pf-email-hero"></p>
+          <p class="perfil-chips"><span class="profile-level" id="perfil-since">Conta</span> <span class="profile-level" id="perfil-level">Semente</span></p>
+        </div>
+      </div>
     </div>
-    <div class="menu-list">
-      <div class="menu-item menu-item-danger" onclick="openProfileMenu()"><span class="menu-item-icon">🔄</span><span class="menu-item-label">Trocar tipo de conta</span><span class="menu-item-arrow">›</span></div>
-      <div class="menu-item menu-item-danger" onclick="doLogout()"><span class="menu-item-icon">🚪</span><span class="menu-item-label">Sair da conta</span><span class="menu-item-arrow">›</span></div>
+    <div class="page-pad perfil-body">
+      <input type="file" id="avatar-input" accept="image/*" style="display:none" onchange="onAvatarSelecionado(event)">
+      <div class="profile-stats"><div class="profile-stat"><div class="profile-stat-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div><p class="profile-stat-n" id="pf-n1">0</p><p class="profile-stat-l" id="pf-l1">Denúncias</p></div><div class="profile-stat"><div class="profile-stat-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div><p class="profile-stat-n" id="pf-n2">0</p><p class="profile-stat-l" id="pf-l2">Procedentes</p></div><div class="profile-stat"><div class="profile-stat-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg></div><p class="profile-stat-n" id="pf-n3">0</p><p class="profile-stat-l" id="pf-l3">Resolvidas</p></div></div>
+      <div id="pf-conq-wrap"><p class="section-head">Conquistas recentes</p><div class="ach-row" id="pf-conq"></div></div>
+      <div class="menu-list">
+        <div class="menu-item " id="mi-minhas" onclick="abrirModal('modal-minhas')"><span class="menu-item-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span><span class="menu-item-label">Minhas denúncias</span><span class="menu-item-count" id="pf-count">0</span><span class="menu-item-arrow" aria-hidden="true">›</span></div>
+        <div class="menu-item "  onclick="abrirModal('modal-dados')"><span class="menu-item-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></span><span class="menu-item-label">Editar meus dados</span><span class="menu-item-arrow" aria-hidden="true">›</span></div>
+        <div class="menu-item "  onclick="openProfileMenu()"><span class="menu-item-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></span><span class="menu-item-label">Trocar tipo de conta</span><span class="menu-item-arrow" aria-hidden="true">›</span></div>
+        <div class="menu-item menu-item-danger"  onclick="abrirModal('modal-sair')"><span class="menu-item-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></span><span class="menu-item-label">Sair da conta</span><span class="menu-item-arrow" aria-hidden="true">›</span></div>
+      </div>
     </div>
-  </div></div>
+  </div>
   <nav class="bottomnav" id="nav-perfil"></nav>
 </div>
+
+<div class="overlay modal-gen" id="modal-minhas"><div class="sheet">
+  <div class="sheet-header"><h2 id="min-title">Minhas denúncias</h2><button type="button" class="sheet-close" onclick="fecharModal('modal-minhas')">✕</button></div>
+  <span id="pf-lista-titulo" hidden></span><div id="pf-lista"></div>
+</div></div>
+
+<div class="overlay modal-gen" id="modal-dados"><div class="sheet sheet-sm">
+  <div class="sheet-header"><h2 id="dad-title">Editar meus dados</h2><button type="button" class="sheet-close" onclick="fecharModal('modal-dados')">✕</button></div>
+  <label class="form-label" for="pf-nome">Nome de exibição</label>
+  <div class="input-wrap"><input type="text" class="form-input" id="pf-nome" maxlength="60" autocomplete="name" style="padding-left:12px"></div>
+  <p id="pf-email" style="color:var(--muted);margin-bottom:16px"></p>
+  <div class="ong-actions"><button class="btn btn-danger" style="flex:1" onclick="document.getElementById('avatar-input').click()">📷 Alterar foto</button><button class="btn btn-primary" style="flex:1" onclick="salvarNome()">Salvar</button></div>
+</div></div>
+
+<div class="overlay modal-gen modal-center" id="modal-sair"><div class="sheet sheet-sm">
+  <div class="sheet-header"><h2 id="sair-title">Sair da conta?</h2><button type="button" class="sheet-close" onclick="fecharModal('modal-sair')">✕</button></div>
+  <p style="color:var(--muted);margin-bottom:18px">Você voltará para a tela de login.</p>
+  <div class="ong-actions"><button class="btn btn-danger" style="flex:1" onclick="fecharModal('modal-sair')">Cancelar</button><button class="btn btn-primary" style="flex:1" onclick="fecharModal('modal-sair');doLogout()">Sair</button></div>
+</div></div>
+
 
 <!-- ══ MODAL: NOVA DENÚNCIA ═════════════════════════════ -->
 <div class="overlay" id="modal-nd">
   <div class="sheet">
     <div class="sheet-header"><h2>Nova Denúncia</h2><button class="sheet-close" onclick="closeModal()">✕</button></div>
-
     <label class="form-label">Título da Ocorrência</label>
     <div class="input-wrap" style="margin-bottom:16px">
       <span class="input-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></span>
       <input type="text" class="form-input" id="nd-titulo" placeholder="Ex: Lixo descartado no parque..." maxlength="100"/>
     </div>
-
     <label class="form-label">Tipo de Ocorrência</label>
     <div class="tipo-grid">
       <button class="tipo-btn" onclick="selTipo(this)">Desmatamento</button>
@@ -287,7 +314,6 @@
       <button class="tipo-btn" onclick="selTipo(this)">Queimada</button>
       <button class="tipo-btn" onclick="selTipo(this)">Despejo ilegal</button>
     </div>
-
     <label class="form-label">Adicionar Foto</label>
     <input type="file" id="foto-input" accept="image/*" style="display:none" onchange="onFotoSelecionada(event)">
     <div class="foto-drop" id="foto-drop" onclick="abrirSeletorFoto()">
@@ -295,29 +321,25 @@
       <p id="foto-label">Toque para adicionar</p>
       <small id="foto-sub">JPG, PNG ou WEBP • máx. 5 MB</small>
     </div>
-
+    <label class="form-label" for="nd-foto-alt">Descreva a foto (opcional)</label>
+    <div class="input-wrap" style="margin-bottom:16px"><input type="text" class="form-input" id="nd-foto-alt" maxlength="200" placeholder="Ex: sacos de lixo ao lado do córrego" style="padding-left:12px"></div>
     <label class="form-label">Descrição</label>
     <textarea class="form-textarea" id="nd-desc" placeholder="Descreva o problema encontrado com o máximo de detalhes possível..."></textarea>
-
     <label class="form-label">Localização</label>
     <div class="loc-opcoes">
       <div class="loc-row">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--g800)" stroke-width="2" style="flex-shrink:0"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--g800)" stroke-width="2" style="flex-shrink:0"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
         <div style="flex:1">
-          <span style="font-size:13px;font-weight:600;display:block">Localização GPS automática</span>
-          <small id="loc-status" style="font-size:11px;color:var(--muted)">Aguardando localização...</small>
+          <span style="font-size:calc(13px*var(--fs,1));font-weight:600;display:block">GPS automático</span>
+          <small id="loc-status" style="font-size:calc(11px*var(--fs,1));color:var(--muted)">Aguardando localização...</small>
         </div>
-        <button class="btn btn-danger" style="font-size:11px;padding:6px 10px;flex-shrink:0" onclick="obterLocalizacaoGPS()">
-          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
-          Atualizar
-        </button>
+        <button class="btn btn-danger" style="font-size:calc(11px*var(--fs,1));padding:6px 10px;flex-shrink:0" onclick="obterLocalizacaoGPS()">Atualizar</button>
       </div>
-      <div style="text-align:center;font-size:11px;color:var(--muted);margin:6px 0">ou</div>
-      <button class="btn btn-danger btn-full" id="btn-selecionar-mapa" onclick="ativarModoLocMapa()" style="font-size:12px">
-        📍 Selecionar no mapa
+      <div style="text-align:center;font-size:calc(11px*var(--fs,1));color:var(--muted);margin:8px 0">— ou —</div>
+      <button class="btn btn-danger btn-full" id="btn-selecionar-mapa" onclick="ativarModoLocMapa()" style="font-size:calc(13px*var(--fs,1));padding:11px">
+        📍 Tocar no mapa para marcar o local
       </button>
     </div>
-
     <button class="btn btn-primary btn-full" style="margin-top:16px" onclick="enviarDenuncia()">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
       Enviar Denúncia
@@ -329,17 +351,17 @@
 <div class="overlay" id="modal-profile">
   <div class="sheet sheet-sm">
     <div class="sheet-header"><h2>Trocar tipo de conta</h2><button class="sheet-close" onclick="closeProfileMenu()">✕</button></div>
-    <button class="profile-switch-btn" id="psw-usuario" onclick="navigate('mapa');closeProfileMenu()">
+    <button class="profile-switch-btn" id="psw-usuario" onclick="trocarPerfil('usuario')">
       <div class="psw-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div>
       <div><p class="psw-label">Usuário / Cidadão</p><p class="psw-desc">Acessa o mapa e faz denúncias</p></div>
       <span class="psw-check hidden">✓</span>
     </button>
-    <button class="profile-switch-btn" id="psw-ong" onclick="navigate('moderacao');closeProfileMenu()">
+    <button class="profile-switch-btn" id="psw-ong" onclick="trocarPerfil('ong')">
       <div class="psw-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
       <div><p class="psw-label">ONG</p><p class="psw-desc">Modera e valida ocorrências</p></div>
       <span class="psw-check hidden">✓</span>
     </button>
-    <button class="profile-switch-btn" id="psw-orgao" onclick="navigate('moderacao');closeProfileMenu()">
+    <button class="profile-switch-btn" id="psw-orgao" onclick="trocarPerfil('orgao')">
       <div class="psw-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg></div>
       <div><p class="psw-label">Outro Órgão</p><p class="psw-desc">Fiscaliza ocorrências reportadas</p></div>
       <span class="psw-check hidden">✓</span>
@@ -353,24 +375,19 @@
   </div>
 </div>
 
-<!-- Loading overlay -->
-<div id="loading-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:500;align-items:center;justify-content:center;flex-direction:column;gap:14px">
+<!-- Loading -->
+<div class="overlay modal-gen modal-center" id="modal-excluir"><div class="sheet sheet-sm">
+  <div class="sheet-header"><h2 id="exc-title">Excluir denúncia?</h2><button type="button" class="sheet-close" onclick="fecharModal('modal-excluir')">✕</button></div>
+  <p id="excluir-texto" style="color:var(--muted);margin-bottom:18px"></p>
+  <div class="ong-actions"><button class="btn btn-danger" style="flex:1" onclick="fecharModal('modal-excluir')">Cancelar</button><button class="btn btn-danger-solid" style="flex:1" onclick="confirmarExcluir()">Excluir</button></div>
+</div></div>
+
+<div id="loading-overlay" role="status" aria-live="polite" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:500;align-items:center;justify-content:center;flex-direction:column;gap:14px">
   <div style="width:44px;height:44px;border:4px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite"></div>
-  <p style="color:#fff;font-size:14px;font-weight:600">Carregando...</p>
+  <p style="color:#fff;font-size:calc(14px*var(--fs,1));font-weight:600">Carregando...</p>
 </div>
 
 <div class="toast" id="toast"></div>
-
-<style>
-@keyframes spin { to { transform: rotate(360deg); } }
-.loc-opcoes { background:var(--g50);border-radius:var(--radius-sm);padding:12px;margin-bottom:16px; }
-.badge-blue { background:#E3F2FD;color:#1565C0; }
-.popup-badge-blue { background:#E3F2FD;color:#1565C0; }
-.btn-resolve { background:#1565C0;color:#fff;flex:1; }
-.btn-resolve:hover { background:#0D47A1; }
-.legend-toggle-btn { background:none;border:1px solid #1565C0;color:#1565C0;border-radius:20px;padding:3px 10px;font-size:10px;font-weight:600;cursor:pointer;margin-top:4px;font-family:inherit;transition:all .15s; }
-.legend-toggle-btn.active { background:#1565C0;color:#fff; }
-</style>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
@@ -378,5 +395,11 @@
 <script src="data.js"></script>
 <script src="map.js"></script>
 <script src="app.js"></script>
+<script src="ongs.js"></script>
+<script src="busca.js"></script>
+<script src="a11y.js"></script>
+<div vw class="enabled"><div vw-access-button class="active"></div><div vw-plugin-wrapper><div class="vw-plugin-top-wrapper"></div></div></div>
+<script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+<script>window.VLibras && new window.VLibras.Widget("https://vlibras.gov.br/app");</script>
 </body>
 </html>
