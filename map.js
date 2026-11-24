@@ -17,6 +17,20 @@ let locMarker         = null;
 let modoLocMapa       = false;
 const pinMarkers      = {};
 let mostrarResolvidas = false;
+let camadaRua = null, camadaSat = null, marcadorEu = null, circuloEu = null;
+let filtroCat         = "todas";
+function pinVisivel(o) { return (filtroCat === "todas" || o.d.tipo_categoria === filtroCat) && (o.status !== "resolvida" || mostrarResolvidas); }
+function aplicarFiltrosMapa() {
+  if (!arboMap) return;
+  Object.values(pinMarkers).forEach(o => { pinVisivel(o) ? o.marker.addTo(arboMap) : o.marker.remove(); });
+  if (typeof refreshHeat === "function") refreshHeat();
+}
+function filtrarCategoria(cat) {
+  filtroCat = cat;
+  aplicarFiltrosMapa();
+  const n = Object.values(pinMarkers).filter(pinVisivel).length;
+  showToast(cat === "todas" ? "Mostrando todas as ocorrências" : n + " ocorrência(s): " + cat);
+}
 
 /* ── CORES E ÍCONES ─────────────────────────────────────── */
 const PIN_COLORS = {
@@ -40,10 +54,26 @@ function initMap() {
     attributionControl: true,
   });
 
-  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  camadaRua = L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
     attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     maxZoom: 19,
-  }).addTo(arboMap);
+  });
+  camadaSat = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
+    attribution: "Imagens © Esri, Maxar, Earthstar Geographics",
+    maxZoom: 19,
+  });
+  let sat = false;
+  try { sat = localStorage.getItem("arbo-sat") === "1"; } catch (e) { /* sem storage */ }
+  (sat ? camadaSat : camadaRua).addTo(arboMap);
+  arboMap.getContainer().classList.toggle("arbo-sat", sat);
+  criarControlesMapa(sat);
+
+  // Botão "Ver detalhes" dentro do popup (o Leaflet bloqueia cliques que subiriam até o document)
+  arboMap.on("popupopen", (ev) => {
+    const el = ev.popup.getElement && ev.popup.getElement();
+    const btn = el && el.querySelector("[data-det]");
+    if (btn) btn.addEventListener("click", () => { if (typeof abrirDetalhe === "function") abrirDetalhe(btn.getAttribute("data-det")); });
+  });
 
   // Clique no mapa para selecionar localização
   arboMap.on("click", (e) => {
@@ -121,11 +151,7 @@ function toggleResolvidas(btn) {
   btn.textContent = mostrarResolvidas ? "🟢 Ocultar resolvidas" : "🟢 Mostrar resolvidas";
   btn.classList.toggle("active", mostrarResolvidas);
 
-  Object.values(pinMarkers).forEach(obj => {
-    if (obj.status === "resolvida") {
-      mostrarResolvidas ? obj.marker.addTo(arboMap) : obj.marker.remove();
-    }
-  });
+  aplicarFiltrosMapa();
 }
 
 /* ── ÍCONE ──────────────────────────────────────────────── */
@@ -144,7 +170,7 @@ function criarIcone(status) {
 }
 
 /* ── POPUP ──────────────────────────────────────────────── */
-function buildPopupHTML(d) {
+function buildPopupHTMLOld(d) {
   const visual = tipoVisual(d.tipo_categoria);
   const imgSection = d.img_url
     ? `<div class="popup-img"><img src="${esc(d.img_url)}" alt="${esc(d.img_alt || 'Foto da ocorrência: ' + d.titulo)}" style="width:100%;height:100%;object-fit:cover"></div>`
@@ -173,6 +199,32 @@ function buildPopupHTML(d) {
     </div>`;
 }
 
+function buildPopupHTML(d) {
+  const visual = tipoVisual(d.tipo_categoria);
+  const b = ({
+    analise:   { cls: "popup-badge-yellow", txt: "Não Verificada" },
+    proc:      { cls: "popup-badge-green",  txt: "Procedente"     },
+    rec:       { cls: "popup-badge-red",    txt: "Não procedente" },
+    resolvida: { cls: "popup-badge-blue",   txt: "Resolvida"      },
+  })[d.status] || { cls: "popup-badge-yellow", txt: "Não Verificada" };
+  const img = d.img_url
+    ? `<img src="${esc(d.img_url)}" alt="${esc(d.img_alt || 'Foto da ocorrência: ' + d.titulo)}" loading="lazy">`
+    : `<span class="popup-emoji" aria-hidden="true">${visual.emoji}</span>`;
+  const desc = d.descricao ? `<p class="popup-desc">${esc(d.descricao)}</p>` : "";
+  return `
+    <div class="popup-img" style="background:${visual.bg}">${img}<span class="popup-badge popup-chip ${b.cls}">${b.txt}</span></div>
+    <div class="popup-body">
+      <div class="popup-cat"><span aria-hidden="true">${visual.emoji}</span> ${esc(d.tipo_categoria || "Outro")}</div>
+      <div class="popup-title">${esc(d.titulo)}</div>
+      ${desc}
+      <div class="popup-meta">
+        <span><span aria-hidden="true">📍</span> ${esc(d.localizacao || "Localização não informada")}</span>
+        <span><span aria-hidden="true">🕐</span> ${formatarTempo(d.created_at)}</span>
+      </div>
+      <button type="button" class="popup-more" data-det="${esc(d.id)}">Ver detalhes <span aria-hidden="true">→</span></button>
+    </div>`;
+}
+
 /* ── ADICIONA PIN ───────────────────────────────────────── */
 function adicionarPinMapa(d) {
   if (!arboMap) return;
@@ -183,15 +235,17 @@ function adicionarPinMapa(d) {
     title: `${d.titulo} — ${({analise:'Não verificada',proc:'Procedente',resolvida:'Resolvida'})[d.status] || ''}` });
   marker.bindPopup(buildPopupHTML(d), { maxWidth: 265, minWidth: 260, className: "arbo-popup" });
 
-  if (d.status !== "resolvida" || mostrarResolvidas) marker.addTo(arboMap);
   pinMarkers[d.id] = { marker, status: d.status, d };
+  if (pinVisivel(pinMarkers[d.id])) marker.addTo(arboMap);
+  window.arboDenCache && (window.arboDenCache[d.id] = d);
+  refreshHeat();
 }
 
 /* ── ATUALIZA PIN ───────────────────────────────────────── */
 function atualizarPinMapa(d) {
   const obj = pinMarkers[d.id];
   if (d.status === "rec") {
-    if (obj) { obj.marker.remove(); delete pinMarkers[d.id]; }
+    if (obj) { obj.marker.remove(); delete pinMarkers[d.id]; refreshHeat(); }
     return;
   }
   if (!obj) { adicionarPinMapa(d); return; }
@@ -199,13 +253,15 @@ function atualizarPinMapa(d) {
   obj.marker.setPopupContent(buildPopupHTML(d));
   obj.status = d.status;
   obj.d = d;
-  if (d.status === "resolvida" && !mostrarResolvidas) obj.marker.remove();
+  window.arboDenCache && (window.arboDenCache[d.id] = d);
+  pinVisivel(obj) ? obj.marker.addTo(arboMap) : obj.marker.remove();
+  refreshHeat();
 }
 
 /* ── REMOVE PIN (denúncia excluída) ─────────────────────── */
 function removerPinMapa(id) {
   const o = pinMarkers[id];
-  if (o) { o.marker.remove(); delete pinMarkers[id]; }
+  if (o) { o.marker.remove(); delete pinMarkers[id]; refreshHeat(); }
 }
 
 /* ── FECHA POPUP ────────────────────────────────────────── */
@@ -226,3 +282,114 @@ const mapObserver = new MutationObserver(() => {
   }
 });
 mapObserver.observe(mapaScreen, { attributes: true, attributeFilter: ["class"] });
+
+
+/* ── MAPA DE CALOR ─────────────────────────────────────────
+   Intensidade por ocorrência (procedente pesa mais) e raio que acompanha o zoom,
+   para o calor representar área real. Pontos isolados ficam verdes/amarelos;
+   onde se acumulam várias ocorrências, vira laranja/vermelho. */
+let heatOn = false, heatLayer = null;
+const PESO_CALOR = { proc: 1, analise: 0.7 };
+function pontosCalor() {
+  return Object.values(pinMarkers)
+    .filter(o => PESO_CALOR[o.status] && o.d.latitude && o.d.longitude && (filtroCat === "todas" || o.d.tipo_categoria === filtroCat))
+    .map(o => [o.d.latitude, o.d.longitude, PESO_CALOR[o.status]]);
+}
+function raioCalor() { return Math.max(28, Math.min(80, (arboMap.getZoom() - 8) * 6)); }
+function ajustarCalor() {
+  if (!heatOn || !heatLayer || !arboMap) return;
+  const r = raioCalor();
+  heatLayer.setOptions({ radius: r, blur: Math.round(r * 0.75) });
+}
+function refreshHeat() {
+  if (!heatOn || !arboMap || !heatLayer) return;
+  heatLayer.setLatLngs(pontosCalor());
+}
+function toggleHeat(btn) {
+  if (!arboMap) { showToast("Mapa ainda não carregado."); return; }
+  if (typeof L.heatLayer !== "function") { showToast("Não foi possível carregar o mapa de calor (sem internet?)."); return; }
+  heatOn = !heatOn;
+  if (heatOn) {
+    if (!heatLayer) {
+      heatLayer = L.heatLayer([], { radius: raioCalor(), blur: Math.round(raioCalor() * 0.75), maxZoom: 18, max: 2.5, minOpacity: 0.3,
+        gradient: { 0.15: "#2E7D32", 0.35: "#9CCC65", 0.55: "#FFEB3B", 0.75: "#FF9800", 1: "#C62828" } });
+      arboMap.on("zoomend", ajustarCalor);
+    }
+    heatLayer.setLatLngs(pontosCalor());
+    ajustarCalor();
+    heatLayer.addTo(arboMap);
+  } else if (heatLayer) {
+    heatLayer.remove();
+  }
+  arboMap.getContainer().classList.toggle("heat-on", heatOn);
+  const esc = document.getElementById("heat-scale");
+  if (esc) esc.hidden = !heatOn;
+  btn.classList.toggle("active", heatOn);
+  btn.textContent = heatOn ? "🔥 Ocultar mapa de calor" : "🔥 Mapa de calor";
+  btn.setAttribute("aria-pressed", String(heatOn));
+  showToast(heatOn ? "Mapa de calor ligado: vermelho = mais ocorrências" : "Mapa de calor desligado");
+}
+
+
+/* ── CONTROLES DO MAPA: minha localização + satélite ───────── */
+function criarControlesMapa(satInicial) {
+  const Ctl = L.Control.extend({
+    options: { position: "topleft" },
+    onAdd() {
+      const box = L.DomUtil.create("div", "leaflet-bar arbo-ctl");
+      const mk = (cls, rotulo, svg, fn) => {
+        const b = L.DomUtil.create("button", "arbo-ctl-btn " + cls, box);
+        b.type = "button"; b.setAttribute("aria-label", rotulo); b.title = rotulo;
+        b.innerHTML = svg;
+        L.DomEvent.on(b, "click", (e) => { L.DomEvent.stop(e); fn(b); });
+        return b;
+      };
+      mk("arbo-ctl-loc", "Ir para a minha localização",
+        '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="8"/><path d="M12 1v3M12 20v3M1 12h3M20 12h3"/></svg>', irParaMinhaLocalizacao);
+      const sat = mk("arbo-ctl-sat", "Alternar entre mapa de ruas e satélite",
+        '<svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 12 12 17 22 12"/><polyline points="2 17 12 22 22 17"/></svg>', alternarSatelite);
+      sat.setAttribute("aria-pressed", String(!!satInicial));
+      return box;
+    },
+  });
+  new Ctl().addTo(arboMap);
+}
+
+function alternarSatelite() {
+  if (!arboMap) return;
+  const virarSat = !arboMap.hasLayer(camadaSat);
+  if (virarSat) { camadaRua.remove(); camadaSat.addTo(arboMap); } else { camadaSat.remove(); camadaRua.addTo(arboMap); }
+  arboMap.getContainer().classList.toggle("arbo-sat", virarSat);
+  const b = document.querySelector(".arbo-ctl-sat"); if (b) b.setAttribute("aria-pressed", String(virarSat));
+  try { localStorage.setItem("arbo-sat", virarSat ? "1" : "0"); } catch (e) { /* sem storage */ }
+  showToast(virarSat ? "Mapa de satélite" : "Mapa de ruas");
+}
+
+/* Posição do usuário (reaproveita a última por 60 s); falhas viram mensagens claras */
+function obterPosicao() {
+  return new Promise((ok, falha) => {
+    if (window._ultimaPos && Date.now() - window._ultimaPos.t < 60000) { ok(window._ultimaPos); return; }
+    if (!navigator.geolocation) { falha({ code: 0 }); return; }
+    navigator.geolocation.getCurrentPosition(
+      p => { window._ultimaPos = { lat: p.coords.latitude, lng: p.coords.longitude, acc: p.coords.accuracy, t: Date.now() }; ok(window._ultimaPos); },
+      e => falha(e), { enableHighAccuracy: true, timeout: 10000, maximumAge: 30000 });
+  });
+}
+function msgErroGeo(e) {
+  return e && e.code === 1 ? "Permita o acesso à localização no navegador para usar este recurso."
+       : e && e.code === 3 ? "A localização demorou demais. Tente de novo."
+       : "Não foi possível obter sua localização.";
+}
+
+async function irParaMinhaLocalizacao() {
+  if (!arboMap) return;
+  try {
+    const p = await obterPosicao();
+    arboMap.setView([p.lat, p.lng], Math.max(arboMap.getZoom(), 17));
+    if (marcadorEu) marcadorEu.remove();
+    if (circuloEu) circuloEu.remove();
+    circuloEu = L.circle([p.lat, p.lng], { radius: Math.min(p.acc || 30, 200), color: "#1565C0", weight: 1, fillOpacity: 0.12, interactive: false }).addTo(arboMap);
+    marcadorEu = L.circleMarker([p.lat, p.lng], { radius: 8, color: "#fff", weight: 3, fillColor: "#1565C0", fillOpacity: 1, interactive: false }).addTo(arboMap);
+    showToast("Você está aqui");
+  } catch (e) { showToast(msgErroGeo(e)); }
+}

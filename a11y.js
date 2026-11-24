@@ -16,14 +16,28 @@
   };
 
   /* ── Preferências ─────────────────────────────────────── */
-  const prefs = Object.assign({ fs: 1, hc: false, rm: false, cb: "none", theme: "auto" }, store.get("arbo-a11y", {}));
+  const prefs = Object.assign({ fs: 1, hc: false, rm: false, cb: "none", theme: "auto", dys: false, keys: true }, store.get("arbo-a11y", {}));
+  /* Fonte de fácil leitura: só baixa quando a pessoa liga a opção */
+  let fonteLeitura = false;
+  function carregarFonteLeitura() {
+    if (fonteLeitura) return;
+    fonteLeitura = true;
+    const l = document.createElement("link");
+    l.rel = "stylesheet";
+    l.href = "https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap";
+    document.head.append(l);
+  }
+
   function applyPrefs() {
     const r = document.documentElement;
     r.style.setProperty("--fs", prefs.fs);
     r.classList.toggle("hc", !!prefs.hc);
     const escuro = prefs.theme === "dark" || (prefs.theme === "auto" && matchMedia("(prefers-color-scheme: dark)").matches);
     r.classList.toggle("dark", escuro && !prefs.hc);
+    r.classList.toggle("gray", prefs.theme === "gray" && !prefs.hc);
     r.classList.toggle("rm", !!prefs.rm);
+    r.classList.toggle("dys", !!prefs.dys);
+    if (prefs.dys) carregarFonteLeitura();
     r.classList.toggle("cb-rg", prefs.cb === "rg");
     r.classList.toggle("cb-by", prefs.cb === "by");
     store.set("arbo-a11y", prefs);
@@ -40,48 +54,108 @@
   }
 
   /* ── Painel de acessibilidade ─────────────────────────── */
+  const svgI = p => `<svg viewBox="0 0 24 24" aria-hidden="true">${p}</svg>`;
+  const ICON = {
+    acc:   svgI('<circle cx="12" cy="4.5" r="2"/><path d="M4.5 8.5 12 10l7.5-1.5M12 10v5M8.5 21l3.5-6 3.5 6"/>'),
+    gray:  svgI('<circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/>'),
+    sun:   svgI('<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>'),
+    moon:  svgI('<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>'),
+    auto:  svgI('<circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/>'),
+    speak: svgI('<path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/>'),
+  };
+  const sw = (a, b, c) => `<span class="cb-sw"><i style="background:${a}"></i><i style="background:${b}"></i><i style="background:${c}"></i></span>`;
+
   const fab = el("button", "a11y-fab");
   fab.type = "button";
-  fab.innerHTML = '<span aria-hidden="true">Aa</span>';
+  fab.innerHTML = ICON.acc; fab.dataset.tip = "Acessibilidade";
   fab.setAttribute("aria-label", "Opções de acessibilidade");
   fab.setAttribute("aria-haspopup", "dialog");
   fab.setAttribute("aria-expanded", "false");
 
+  const NEXT = { light: "gray", gray: "dark", dark: "light" };
+  const curTheme = () => { const c = document.documentElement.classList; return c.contains("dark") ? "dark" : c.contains("gray") ? "gray" : "light"; };
   const tbtn = el("button", "a11y-fab theme-fab");
   tbtn.type = "button"; tbtn.setAttribute("aria-label", "Alternar modo escuro");
-  tbtn.addEventListener("click", () => { prefs.theme = document.documentElement.classList.contains("dark") ? "light" : "dark"; applyPrefs(); });
+  tbtn.addEventListener("click", () => { prefs.theme = NEXT[curTheme()]; applyPrefs(); });
 
   const panel = el("div", "overlay");
   panel.id = "modal-a11y";
-  panel.innerHTML = `<div class="sheet sheet-sm">
-    <div class="sheet-header"><h2 id="a11y-title">Acessibilidade</h2><button type="button" class="sheet-close" data-close>✕</button></div>
-    <p class="a11y-label" id="th-lbl">Tema</p>
-    <div class="a11y-row" role="group" aria-labelledby="th-lbl">
-      <button type="button" class="a11y-opt" data-theme="auto">Automático</button>
-      <button type="button" class="a11y-opt" data-theme="light">Claro</button>
-      <button type="button" class="a11y-opt" data-theme="dark">Escuro</button>
+  const ATALHOS = [["/", "Buscar"], ["N", "Nova denúncia"], ["M", "Mapa"], ["O", "ONGs"], ["D", "Moderação"], ["P", "Perfil"], ["T", "Trocar tema"], ["C", "Mapa de calor"], ["S", "Satélite"], ["L", "Perto de mim"], ["?", "Ver esta lista"]];
+  const atalhosHTML = ATALHOS.map(([k, t]) => `<div><dt><kbd>${k}</kbd></dt><dd>${t}</dd></div>`).join("");
+
+  panel.innerHTML = `<div class="sheet sheet-sm a11y-sheet">
+    <div class="a11y-head">
+      <span class="a11y-badge" aria-hidden="true">${ICON.acc}</span>
+      <div><h2 id="a11y-title">Acessibilidade</h2><p>Deixe o Arbo do seu jeito</p></div>
+      <button type="button" class="sheet-close" data-close>✕</button>
     </div>
-    <p class="a11y-label" id="cb-lbl">Cores para daltonismo</p>
-    <div class="a11y-row" role="group" aria-labelledby="cb-lbl">
-      <button type="button" class="a11y-opt" data-cb="none">Padrão</button>
-      <button type="button" class="a11y-opt" data-cb="rg">Vermelho-verde</button>
-      <button type="button" class="a11y-opt" data-cb="by">Azul-amarelo</button>
+    <section class="a11y-card">
+      <h3 class="a11y-label" id="th-lbl">Tema</h3>
+      <div class="a11y-tiles" role="group" aria-labelledby="th-lbl">
+        <button type="button" class="a11y-tile" data-theme="auto">${ICON.auto}<span>Automático</span></button>
+        <button type="button" class="a11y-tile" data-theme="light">${ICON.sun}<span>Claro</span></button>
+        <button type="button" class="a11y-tile" data-theme="gray">${ICON.gray}<span>Cinza</span></button>
+        <button type="button" class="a11y-tile" data-theme="dark">${ICON.moon}<span>Escuro</span></button>
+      </div>
+    </section>
+    <section class="a11y-card">
+      <h3 class="a11y-label" id="fs-lbl">Tamanho do texto</h3>
+      <div class="a11y-seg-row" role="group" aria-labelledby="fs-lbl">
+        <button type="button" class="a11y-seg" data-fs="1"><b style="font-size:15px">A</b><span>Normal</span></button>
+        <button type="button" class="a11y-seg" data-fs="1.2"><b style="font-size:20px">A</b><span>Grande</span></button>
+        <button type="button" class="a11y-seg" data-fs="1.4"><b style="font-size:26px">A</b><span>Muito grande</span></button>
+      </div>
+    </section>
+    <section class="a11y-card">
+      <h3 class="a11y-label" id="cb-lbl">Cores para daltonismo</h3>
+      <div class="a11y-chips" role="group" aria-labelledby="cb-lbl">
+        <button type="button" class="a11y-chip" data-cb="none">${sw("#D48A0C", "#1565C0", "#1E5C2F")}<span>Padrão</span></button>
+        <button type="button" class="a11y-chip" data-cb="rg">${sw("#E69F00", "#0072B2", "#6A3D9A")}<span>Vermelho-verde</span></button>
+        <button type="button" class="a11y-chip" data-cb="by">${sw("#D55E00", "#882255", "#1E5C2F")}<span>Azul-amarelo</span></button>
+      </div>
+    </section>
+    <section class="a11y-card">
+      <button type="button" class="a11y-switch" role="switch" data-pref="hc"><span><strong>Alto contraste</strong><small>Preto e branco, com bordas fortes</small></span><span class="sw-track" aria-hidden="true"><span class="sw-knob"></span></span></button>
+      <button type="button" class="a11y-switch" role="switch" data-pref="rm"><span><strong>Reduzir animações</strong><small>Menos movimento na tela</small></span><span class="sw-track" aria-hidden="true"><span class="sw-knob"></span></span></button>
+    </section>
+    <section class="a11y-card">
+      <button type="button" class="a11y-switch" role="switch" data-pref="dys"><span><strong>Leitura facilitada</strong><small>Fonte mais legível e mais espaço entre letras e linhas</small></span><span class="sw-track" aria-hidden="true"><span class="sw-knob"></span></span></button>
+      <button type="button" class="a11y-switch" role="switch" data-pref="keys"><span><strong>Atalhos de teclado</strong><small>Teclas simples para navegar. Desligue se atrapalhar seu leitor de tela</small></span><span class="sw-track" aria-hidden="true"><span class="sw-knob"></span></span></button>
+      <details class="a11y-keys"><summary>Ver lista de atalhos</summary><dl>${atalhosHTML}</dl></details>
+    </section>
+    <div class="a11y-foot">
+      <button type="button" class="a11y-primary" id="a11y-speak">${ICON.speak}<span>Ler esta tela em voz alta</span></button>
+      <button type="button" class="a11y-reset" id="a11y-reset">Restaurar padrão</button>
     </div>
-    <p class="a11y-label" id="fs-lbl">Tamanho do texto</p>
-    <div class="a11y-row" role="group" aria-labelledby="fs-lbl">
-      <button type="button" class="a11y-opt" data-fs="1">Normal</button>
-      <button type="button" class="a11y-opt" data-fs="1.2">Grande</button>
-      <button type="button" class="a11y-opt" data-fs="1.4">Muito grande</button>
-    </div>
-    <div class="a11y-row">
-      <button type="button" class="a11y-opt" role="switch" data-pref="hc">Alto contraste</button>
-      <button type="button" class="a11y-opt" role="switch" data-pref="rm">Reduzir animações</button>
-    </div>
-    <div class="a11y-row"><button type="button" class="a11y-opt" id="a11y-speak">🔊 Ler esta tela em voz alta</button></div>
   </div>`;
 
   const closePanel = () => { panel.classList.remove("open"); fab.setAttribute("aria-expanded", "false"); };
   fab.addEventListener("click", () => { panel.classList.add("open"); fab.setAttribute("aria-expanded", "true"); });
+  /* ── Atalhos de teclado (desligáveis: WCAG 2.1.4) ── */
+  function telaAtiva() { return document.querySelector(".screen.active"); }
+  function irPara(tela) { const b = document.querySelector('.screen.active .nav-btn[data-screen="' + tela + '"]'); if (b && b.offsetParent !== null) { b.click(); return true; } return false; }
+  document.addEventListener("keydown", e => {
+    if (!prefs.keys || e.ctrlKey || e.metaKey || e.altKey || e.defaultPrevented) return;
+    const t = e.target;
+    if (t && t.closest && t.closest("input,textarea,select,[contenteditable='true']")) return;
+    const k = e.key;
+    if (k === "?") { e.preventDefault(); panel.classList.add("open"); fab.setAttribute("aria-expanded", "true"); const d = $(".a11y-keys", panel); if (d) d.open = true; return; }
+    if (document.querySelector(".overlay.open")) return;
+    const tela = telaAtiva(); if (!tela) return;
+    const logado = typeof currentUserId !== "undefined" && currentUserId;
+    const acao = {
+      "/": () => { const s = $(".search-input", tela); if (s) s.focus(); else return false; },
+      n: () => { if (!logado) return false; if (tela.id !== "screen-mapa" && !irPara("mapa")) return false; if (typeof openModal === "function") openModal(); },
+      m: () => irPara("mapa"), o: () => irPara("ongs"), d: () => irPara("moderacao"), p: () => irPara("perfil"),
+      t: () => tbtn.click(),
+      c: () => { const b = $(".legend-toggle-btn[onclick*='toggleHeat']", tela); if (b) b.click(); else return false; },
+      s: () => { const b = $(".arbo-ctl-sat", tela); if (b) b.click(); else return false; },
+      l: () => { if (tela.id === "screen-mapa" && typeof abrirPerto === "function") abrirPerto(); else return false; },
+    }[k.length === 1 ? k.toLowerCase() : ""];
+    if (!acao) return;
+    if (acao() !== false) e.preventDefault();
+  });
+
   panel.addEventListener("click", e => {
     if (e.target === panel) return closePanel();
     const b = e.target.closest("button");
@@ -91,6 +165,7 @@
     else if (b.dataset.theme) { prefs.theme = b.dataset.theme; applyPrefs(); }
     else if (b.dataset.cb) { prefs.cb = b.dataset.cb; applyPrefs(); }
     else if (b.dataset.pref) { prefs[b.dataset.pref] = !prefs[b.dataset.pref]; applyPrefs(); }
+    else if (b.id === "a11y-reset") { Object.assign(prefs, { fs: 1, hc: false, rm: false, cb: "none", theme: "auto", dys: false, keys: true }); applyPrefs(); }
     else if (b.id === "a11y-speak") speak();
   });
 
@@ -272,8 +347,11 @@
     $$(".profile-option,.tipo-btn").forEach(b => b.setAttribute("aria-checked", String(b.classList.contains("selected") || b.classList.contains("sel"))));
     $$(".ftab,.legend-toggle-btn:not(.list-btn)").forEach(b => b.setAttribute("aria-pressed", String(b.classList.contains("active"))));
     $$(".nav-btn").forEach(b => b.classList.contains("active") ? b.setAttribute("aria-current", "page") : b.removeAttribute("aria-current"));
-    const _esc = document.documentElement.classList.contains("dark");
-    tbtn.setAttribute("aria-pressed", String(_esc)); tbtn.innerHTML = _esc ? '<span aria-hidden="true">☀</span>' : '<span aria-hidden="true">☾</span>';
+    const _cur = curTheme(), _nxt = NEXT[_cur], _nm = { light: "claro", gray: "cinza", dark: "escuro" };
+    tbtn.removeAttribute("aria-pressed");
+    if (tbtn.dataset.ic !== _nxt) { tbtn.dataset.ic = _nxt; tbtn.innerHTML = ICON[{ light: "sun", gray: "gray", dark: "moon" }[_nxt]]; }
+    tbtn.dataset.tip = "Modo " + _nm[_nxt];
+    tbtn.setAttribute("aria-label", "Tema atual: " + _nm[_cur] + ". Mudar para o modo " + _nm[_nxt]);
     $$("[data-theme]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.theme === prefs.theme)));
     $$("[data-cb]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.cb === prefs.cb)));
     $$("[data-fs]").forEach(b => b.setAttribute("aria-pressed", String(+b.dataset.fs === prefs.fs)));
@@ -303,7 +381,8 @@
 
   /* ── Início ───────────────────────────────────────────── */
   const live = el("div", "sr-only"); live.id = "a11y-live"; live.setAttribute("role", "status"); live.setAttribute("aria-live", "polite");
-  document.body.append(fab, tbtn, panel, listPanel, live);
+  const dock = el("div", "a11y-dock"); dock.append(fab, tbtn);
+  document.body.append(dock, panel, listPanel, live);
   $$(".overlay").forEach(watch);
   applyPrefs();
   matchMedia("(prefers-color-scheme: dark)").addEventListener("change", applyPrefs);

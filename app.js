@@ -36,7 +36,6 @@ async function doLogin() {
     return;
   }
 
-  if (["usuario", "ong", "orgao"].includes(escolhido)) await _supabase.from("perfis").update({ tipo: escolhido }).eq("id", data.user.id);
   await carregarPerfil(data.user);
 }
 
@@ -139,6 +138,7 @@ function selectProfile(perfil) {
   const descs  = { usuario: "Registre e acompanhe denúncias ambientais", ong: "Modere e valide ocorrências da sua região", orgao: "Acompanhe e fiscalize ocorrências reportadas" };
   const labels = { usuario: "Entrar como Usuário →", ong: "Entrar como ONG →", orgao: "Entrar como Órgão →" };
   const el = id => document.getElementById(id);
+  if (el("login-codigo-wrap")) el("login-codigo-wrap").hidden = perfil === "usuario";
   if (el("profile-desc")) el("profile-desc").textContent = descs[perfil];
   }
 
@@ -147,6 +147,7 @@ function selectCadPerfil(btn, perfil) {
   btn.classList.add("selected");
   const input = document.getElementById("cad-tipo-val");
   if (input) input.value = perfil;
+  const dica = document.getElementById("cad-codigo-dica"); if (dica) dica.hidden = perfil === "usuario";
 }
 
 function toggleSenha(inputId = "login-senha") {
@@ -304,6 +305,15 @@ function filterCards(status, btn) {
   document.querySelectorAll(".den-card").forEach(card => {
     card.style.display = (status === "todas" || card.dataset.status === status) ? "" : "none";
   });
+  const grid = document.getElementById("den-grid");
+  const antigo = document.getElementById("den-vazio-filtro");
+  if (antigo) antigo.remove();
+  const cards = grid ? grid.querySelectorAll(".den-card") : [];
+  if (cards.length && ![...cards].some(c => c.style.display !== "none")) {
+    const v = estadoVazio({ icone: "filtro", titulo: "Nada nesta categoria", texto: "Nenhuma ocorrência com esse status no momento. Tente outro filtro." });
+    v.id = "den-vazio-filtro";
+    grid.append(v);
+  }
 }
 
 /* ── 6. MODAL NOVA DENÚNCIA ─────────────────────────────── */
@@ -322,6 +332,7 @@ function closeModal() {
 function resetModal() {
   limparErros(document.getElementById("modal-nd"));
   const fa = document.getElementById("nd-foto-alt"); if (fa) fa.value = "";
+  const an = document.getElementById("nd-anon"); if (an) an.checked = false;
   document.querySelectorAll(".tipo-btn").forEach(b => b.classList.remove("sel"));
   document.getElementById("foto-icon").textContent        = "📷";
   document.getElementById("foto-label").textContent       = "Toque para adicionar";
@@ -394,7 +405,7 @@ async function enviarDenuncia() {
   const payload = {
     titulo,
     descricao:      desc,
-    autor_nome:     currentUserName,
+    autor_nome:     document.getElementById("nd-anon")?.checked ? "Anônimo" : currentUserName,
     autor_id:       currentUserId,
     tipo_categoria: tipoBt.textContent.trim(),
     latitude:       coords?.lat || null,
@@ -409,7 +420,7 @@ async function enviarDenuncia() {
   const nova = await inserirDenuncia(payload);
   setLoading(false);
 
-  if (!nova) { showToast("Erro ao enviar denúncia. Tente novamente."); return; }
+  if (!nova) { showToast("Erro ao enviar: " + (window._ultimoErroInsert || "tente novamente") + " — rode o supabase-correcoes.sql"); return; }
 
   closeModal();
   showToast("✓ Denúncia enviada! Ela já aparece no mapa.");
@@ -479,9 +490,11 @@ function showToast(msg) {
   b.onclick = () => t.classList.remove("show");
   t.append(s, b);
   t.classList.add("show");
-  const agenda = () => { clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove("show"), Math.max(6000, msg.length * 90)); };
-  t.onmouseenter = t.onfocusin = () => clearTimeout(toastTimer);
-  t.onmouseleave = t.onfocusout = agenda;
+  const agenda = () => { clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove("show"), Math.max(4500, msg.length * 70)); };
+  // só pausa para quem navega por teclado dentro do aviso; o mouse parado em cima não prende mais o aviso
+  t.onfocusin = () => { if (t.querySelector(":focus-visible")) clearTimeout(toastTimer); };
+  t.onfocusout = agenda;
+  t.onmouseenter = t.onmouseleave = null;
   agenda();
   const live = document.getElementById("a11y-live");
   if (live) { live.textContent = ""; setTimeout(() => { live.textContent = msg; }, 60); }
@@ -519,6 +532,8 @@ function iniciarRealtime() {
         const badgeText  = { analise:"Não Verificada", proc:"Procedente", rec:"Não procedente", resolvida:"Resolvida" }[d.status];
         const badge = card.querySelector(".badge-yellow,.badge-green,.badge-red,.badge-blue");
         if (badge && badgeClass) { badge.className = `badge ${badgeClass}`; badge.textContent = badgeText; }
+        const tt = card.querySelector(".den-title"); if (tt) tt.textContent = d.titulo || "";
+        const dd = card.querySelector(".den-desc"); if (dd) dd.textContent = d.descricao || "";
         updateStatCounters();
       }
     }
@@ -547,7 +562,7 @@ async function carregarPainelPerfil() {
   if (!currentUserId) return;
   const el = id => document.getElementById(id);
   const isOrg = currentProfile !== "usuario";
-  let q = _supabase.from("denuncias").select("id,titulo,status,created_at,tipo_categoria").order("created_at", { ascending: false });
+  let q = _supabase.from("denuncias").select("id,titulo,descricao,status,created_at,tipo_categoria").order("created_at", { ascending: false });
   if (!isOrg) q = q.eq("autor_id", currentUserId);
   const { data, error } = await q;
   if (error) return;
@@ -579,7 +594,7 @@ async function carregarPainelPerfil() {
   const box = el("pf-lista");
   box.textContent = "";
   if (isOrg) return;
-  if (!data.length) { const v = document.createElement("p"); v.style.color = "var(--muted)"; v.textContent = "Você ainda não enviou denúncias."; box.append(v); return; }
+  if (!data.length) { box.append(estadoVazio({ icone: "leaf", titulo: "Você ainda não reportou nada", texto: "Veja algo errado no seu bairro? Registre e acompanhe aqui.", botao: "Fazer minha primeira denúncia", acao: () => { if (typeof fecharModal === "function") fecharModal("modal-minhas"); navigate("mapa"); openModal(); } })); return; }
   const cls = { analise: "badge-yellow", proc: "badge-green", rec: "badge-red", resolvida: "badge-blue" };
   const txt = { analise: "Não verificada", proc: "Procedente", rec: "Não procedente", resolvida: "Resolvida" };
   data.forEach(d => {
@@ -587,18 +602,52 @@ async function carregarPainelPerfil() {
     const t = document.createElement("p");  t.className = "ong-name"; t.style.fontSize = "14px"; t.textContent = d.titulo;
     const m = document.createElement("p");  m.className = "ong-loc"; m.textContent = `${d.tipo_categoria || "Outro"} · ${formatarTempo(d.created_at)}`;
     const b = document.createElement("span"); b.className = "badge " + (cls[d.status] || "badge-yellow"); b.textContent = txt[d.status] || d.status;
-    c.append(t, m, b); box.append(c);
+    window.arboMinhas = window.arboMinhas || {}; window.arboMinhas[d.id] = d;
+    const ac = document.createElement("div"); ac.className = "min-acts";
+    const be = document.createElement("button"); be.type = "button"; be.className = "btn btn-danger btn-sm"; be.textContent = "Editar";
+    be.setAttribute("aria-label", "Editar denúncia: " + d.titulo);
+    if (d.status !== "analise") { be.disabled = true; be.title = "Só dá para editar enquanto estiver Não verificada"; }
+    else be.addEventListener("click", () => editarMinha(d.id));
+    const bx = document.createElement("button"); bx.type = "button"; bx.className = "btn btn-danger btn-sm"; bx.textContent = "Excluir";
+    bx.setAttribute("aria-label", "Excluir denúncia: " + d.titulo);
+    bx.addEventListener("click", () => pedirExcluir(d.id, true));
+    ac.append(be, bx);
+    c.append(t, m, b, ac); box.append(c);
   });
 }
 
 
+let tipoPendente = null;
 async function trocarPerfil(tipo) {
   if (!["usuario", "ong", "orgao"].includes(tipo) || !currentUserId) return;
   closeProfileMenu();
+  if (tipo === currentProfile) return;
+  if (tipo !== "usuario") {            // ONG/Órgão pedem o código de acesso (conferido no servidor)
+    tipoPendente = tipo;
+    limparErros(document.getElementById("modal-codigo"));
+    document.getElementById("cod-input").value = "";
+    document.getElementById("cod-texto").textContent = "Informe o código de acesso para atuar como " + NOMES_TIPO[tipo] + ".";
+    abrirModal("modal-codigo");
+    setTimeout(() => document.getElementById("cod-input").focus(), 60);
+    return;
+  }
+  await aplicarTroca("usuario", "");
+}
+async function confirmarCodigo() {
+  const cod = document.getElementById("cod-input").value.trim();
+  if (!cod) return erroCampo("cod-input", "Digite o código de acesso");
+  const tipo = tipoPendente; tipoPendente = null;
+  fecharModal("modal-codigo");
+  if (tipo) await aplicarTroca(tipo, cod);
+}
+async function aplicarTroca(tipo, codigo) {
   setLoading(true);
-  const { error } = await _supabase.from("perfis").update({ tipo }).eq("id", currentUserId);
+  const { error } = await _supabase.rpc("virar_perfil", { p_tipo: tipo, p_codigo: codigo });
   setLoading(false);
-  if (error) { showToast("Não foi possível trocar o tipo de conta"); return; }
+  if (error) {
+    showToast(/codigo_invalido/.test(error.message) ? "Código de acesso incorreto" : "Não foi possível trocar o tipo de conta (rode o supabase-acesso.sql)");
+    return;
+  }
   currentProfile = tipo;
   applySession();
   navigate(tipo === "usuario" ? "mapa" : "moderacao");
@@ -640,14 +689,17 @@ function fecharModal(id) { document.getElementById(id).classList.remove("open");
 document.querySelectorAll(".overlay.modal-gen").forEach(o => o.addEventListener("click", e => { if (e.target === o) o.classList.remove("open"); }));
 
 let excluirId = null;
-function pedirExcluir(id) {
-  if (currentProfile === "usuario") { showToast("Apenas ONGs e Órgãos podem excluir denúncias"); return; }
+function pedirExcluir(id, propria = false) {
+  if (currentProfile === "usuario" && !propria) { showToast("Apenas ONGs e Órgãos podem excluir denúncias"); return; }
   excluirId = id;
   const t = document.querySelector("#card-" + CSS.escape(id) + " .den-title");
-  document.getElementById("excluir-texto").textContent = "“" + (t ? t.textContent : "Esta denúncia") + "” vai sair do mapa e desta tela. Essa ação não pode ser desfeita.";
+  const nome = t ? t.textContent : ((window.arboMinhas && window.arboMinhas[id] && window.arboMinhas[id].titulo) || "Esta denúncia");
+  document.getElementById("excluir-texto").textContent = "“" + nome + "” vai sair do mapa e desta tela. Essa ação não pode ser desfeita.";
   abrirModal("modal-excluir");
 }
 function removerDenunciaDaTela(id, foco = true) {
+  if (window.arboDenCache) delete window.arboDenCache[id];
+  if (window.arboMinhas) delete window.arboMinhas[id];
   const c = document.getElementById("card-" + id); if (c) c.remove();
   if (typeof removerPinMapa === "function") removerPinMapa(id);
   updateStatCounters();
@@ -660,11 +712,12 @@ async function confirmarExcluir() {
   fecharModal("modal-excluir");
   if (!id) return;
   setLoading(true);
-  const { error, count } = await _supabase.from("denuncias").delete({ count: "exact" }).eq("id", id);
+  const { data: apagadas, error } = await _supabase.from("denuncias").delete().eq("id", id).select("id");
   setLoading(false);
-  if (error || !count) { showToast("Não foi possível excluir. Rode o arquivo supabase-excluir.sql no Supabase."); return; }
+  if (error || !apagadas || !apagadas.length) { showToast("Não foi possível excluir. Rode supabase-excluir.sql e supabase-novidades.sql no Supabase."); return; }
   removerDenunciaDaTela(id);
   showToast("✓ Denúncia excluída");
+  if (typeof carregarPainelPerfil === "function") carregarPainelPerfil();
 }
 
 const RECOVERY = /type=recovery/.test(location.hash);

@@ -34,7 +34,8 @@ async function inserirDenuncia(payload) {
     .single();
 
   if (error) {
-    console.error("[Arbo] Erro ao inserir denúncia:", error.message);
+    console.error("[Arbo] Erro ao inserir denúncia:", error.message, error);
+    window._ultimoErroInsert = error.message;
     return null;
   }
   return data;
@@ -115,7 +116,9 @@ function formatarTempo(iso) {
 }
 
 /* ── RENDER CARD ────────────────────────────────────────── */
+window.arboDenCache = window.arboDenCache || {};
 function renderCardHTML(d) {
+  if (d && d.id != null) window.arboDenCache[d.id] = d;
   const visual = tipoVisual(d.tipo_categoria);
 
   // Foto ou emoji
@@ -192,9 +195,37 @@ function renderCardHTML(d) {
             ${tempo}
           </li>
         </ul>
+        <button type="button" class="den-more" data-det="${id}">Ver detalhes <span aria-hidden="true">→</span></button>
         <div class="den-actions">${acoes}${botaoExcluir}</div>
       </div>
     </div>`;
+}
+
+/* ── ESTADO VAZIO (ilustração + frase + botão opcional) ───
+   Só texto fixo do próprio app: nada vindo de usuário entra aqui. */
+const VAZIO_SVG = {
+  leaf:  '<svg viewBox="0 0 120 120" width="96" height="96"><circle cx="60" cy="60" r="54" fill="var(--g100)"/><path d="M60 92V54" stroke="var(--g800)" stroke-width="5" stroke-linecap="round"/><path d="M60 62c-18 0-28-10-28-26 18 0 28 10 28 26z" fill="var(--g700)"/><path d="M60 52c0-16 10-26 28-26 0 16-10 26-28 26z" fill="var(--g500)"/><ellipse cx="60" cy="96" rx="22" ry="5" fill="var(--g200)"/></svg>',
+  cal:   '<svg viewBox="0 0 120 120" width="96" height="96"><circle cx="60" cy="60" r="54" fill="var(--g100)"/><rect x="30" y="36" width="60" height="52" rx="9" fill="var(--white)" stroke="var(--g800)" stroke-width="4"/><path d="M30 52h60" stroke="var(--g800)" stroke-width="4"/><path d="M45 30v12M75 30v12" stroke="var(--g800)" stroke-width="5" stroke-linecap="round"/><path d="M52 72l6 6 12-13" fill="none" stroke="var(--g700)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  filtro:'<svg viewBox="0 0 120 120" width="96" height="96"><circle cx="60" cy="60" r="54" fill="var(--g100)"/><circle cx="54" cy="54" r="20" fill="none" stroke="var(--g800)" stroke-width="5"/><path d="M69 69l18 18" stroke="var(--g800)" stroke-width="6" stroke-linecap="round"/><path d="M46 54h16" stroke="var(--g700)" stroke-width="5" stroke-linecap="round"/></svg>',
+};
+function estadoVazio(o) {
+  const box = document.createElement("div");
+  box.className = "vazio";
+  box.setAttribute("role", "status");
+  const art = document.createElement("div");
+  art.className = "vazio-art";
+  art.setAttribute("aria-hidden", "true");
+  art.innerHTML = VAZIO_SVG[o.icone] || VAZIO_SVG.leaf;
+  const t = document.createElement("h3"); t.textContent = o.titulo;
+  const p = document.createElement("p"); p.textContent = o.texto;
+  box.append(art, t, p);
+  if (o.botao) {
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "btn btn-primary"; b.textContent = o.botao;
+    b.addEventListener("click", o.acao);
+    box.append(b);
+  }
+  return box;
 }
 
 function renderCards(lista) {
@@ -202,12 +233,11 @@ function renderCards(lista) {
   if (!grid) return;
 
   if (!lista || lista.length === 0) {
-    grid.innerHTML = `
-      <div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--muted)">
-        <div style="font-size:calc(40px*var(--fs,1));margin-bottom:12px">🌿</div>
-        <p style="font-weight:600">Nenhuma denúncia encontrada</p>
-        <p style="font-size:calc(12px*var(--fs,1));margin-top:4px">Novas ocorrências aparecerão aqui em tempo real</p>
-      </div>`;
+    grid.replaceChildren(estadoVazio({
+      icone: "leaf", titulo: "Nenhuma denúncia por aqui ainda",
+      texto: "Quando alguém reportar uma ocorrência, ela aparece aqui em tempo real.",
+      botao: "Reportar uma ocorrência", acao: () => { if (typeof openModal === "function") openModal(); },
+    }));
     return;
   }
 
