@@ -411,7 +411,7 @@ async function enviarDenuncia() {
     latitude:       coords?.lat || null,
     longitude:      coords?.lng || null,
     localizacao:    coords
-      ? `${coords.lat.toFixed(4)}, ${coords.lng.toFixed(4)}`
+      ? await nomeDoLocal(coords.lat, coords.lng)
       : "Localização não informada",
     img_url: imgUrl,
     ...(fotoAlt ? { img_alt: fotoAlt } : {}),
@@ -761,3 +761,24 @@ function buscar(q) {
     lista.forEach(d => adicionarPinMapa(d));
   };
 })();
+
+
+/* Converte coordenadas em "Rua X, Bairro" (OpenStreetMap). Se falhar, usa as coordenadas. */
+async function nomeDoLocal(lat, lng) {
+  const coordsTxt = `${Number(lat).toFixed(4)}, ${Number(lng).toFixed(4)}`;
+  try {
+    const ctl = new AbortController();
+    const t = setTimeout(() => ctl.abort(), 4500);
+    const r = await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=18&accept-language=pt-BR&lat=${lat}&lon=${lng}`, { signal: ctl.signal });
+    clearTimeout(t);
+    if (!r.ok) return coordsTxt;
+    const j = await r.json();
+    const a = j.address || {};
+    const rua = a.road || a.pedestrian || a.footway || a.path || "";
+    const bairro = a.suburb || a.neighbourhood || a.city_district || a.town || a.city || "";
+    const nome = [rua, bairro].filter(Boolean).join(", ");
+    return nome.slice(0, 120) || coordsTxt;
+  } catch (e) {
+    return coordsTxt;
+  }
+}
