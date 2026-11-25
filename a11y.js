@@ -395,3 +395,19 @@
     requestAnimationFrame(() => { queued = false; enhance(); sync(); });
   }).observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ["class"] });
 })();
+
+
+/* Dock de acessibilidade: desvia da barra de rolagem da tela ativa */
+(function () {
+  function ajustar() {
+    const dock = document.querySelector(".a11y-dock");
+    if (!dock) return;
+    const sc = document.querySelector(".screen.active .scroll-content");
+    const sb = sc ? Math.max(0, sc.offsetWidth - sc.clientWidth) : 0;
+    dock.style.setProperty("--sb", sb + "px");
+  }
+  setInterval(ajustar, 400);
+  window.addEventListener("resize", ajustar);
+  document.addEventListener("click", () => setTimeout(ajustar, 60));
+  ajustar();
+})();
