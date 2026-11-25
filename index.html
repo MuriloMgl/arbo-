@@ -166,10 +166,14 @@
 
   <div id="leaflet-map" style="flex:1;position:relative;z-index:1"></div>
 
-  <div class="map-legend"><p class="legend-title">Legenda</p>
-    <div class="legend-item"><span class="legend-dot dot-analise"></span>Não verificada</div>
-    <div class="legend-item"><span class="legend-dot dot-proc"></span>Procedente</div>
-    <div class="legend-item"><span class="legend-dot dot-resolvida"></span>Resolvida</div>
+  <div class="map-legend" id="map-legend">
+    <div class="legend-fixa"><p class="legend-title">Legenda</p>
+      <div class="legend-item"><span class="legend-dot dot-analise"></span>Não verificada</div>
+      <div class="legend-item"><span class="legend-dot dot-proc"></span>Procedente</div>
+      <div class="legend-item"><span class="legend-dot dot-resolvida"></span>Resolvida</div>
+    </div>
+    <button type="button" class="legend-head" id="legend-head" aria-expanded="false" aria-controls="legend-body" onclick="toggleLegenda()"><span>Filtros e ferramentas</span><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="6 15 12 9 18 15"/></svg></button>
+    <div class="legend-body" id="legend-body" hidden>
     <label class="legend-filter" for="cat-select">Filtrar por tipo
       <select id="cat-select" onchange="filtrarCategoria(this.value)">
         <option value="todas">Todos os tipos</option>
@@ -180,6 +184,7 @@
     <button class="legend-toggle-btn" onclick="toggleHeat(this)">🔥 Mapa de calor</button>
     <button class="legend-toggle-btn list-btn" onclick="abrirPerto()">📌 Perto de mim</button>
     <div class="heat-scale" id="heat-scale" hidden aria-hidden="true"><span>Menos</span><i></i><span>Mais</span></div>
+    </div>
   </div>
 
   <button class="fab" onclick="openModal()">

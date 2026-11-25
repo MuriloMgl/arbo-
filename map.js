@@ -393,3 +393,16 @@ async function irParaMinhaLocalizacao() {
     showToast("Você está aqui");
   } catch (e) { showToast(msgErroGeo(e)); }
 }
+
+
+/* Legenda recolhível: começa fechada, abre ao clicar */
+window.toggleLegenda = function (forcar) {
+  const head = document.getElementById("legend-head");
+  const body = document.getElementById("legend-body");
+  const box = document.getElementById("map-legend");
+  if (!head || !body) return;
+  const abrir = typeof forcar === "boolean" ? forcar : body.hidden;
+  body.hidden = !abrir;
+  head.setAttribute("aria-expanded", String(abrir));
+  box.classList.toggle("aberta", abrir);
+};
