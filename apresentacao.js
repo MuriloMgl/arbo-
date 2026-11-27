@@ -7,7 +7,13 @@
 ============================================================ */
 (function () {
   const INTERVALO = 6000;
-  let timer = null, ativo = false, fila = [], idx = 0;
+  let timer = null, ativo = false, ultimoId = null, seq = 0, posicao = "";
+  const tocados = new Set();
+  const extras = new Set();
+  function limparExtras() {
+    extras.forEach(o => { if (typeof pinVisivel === "function" && !pinVisivel(o)) o.marker.remove(); });
+    extras.clear();
+  }
 
   function h(tag, cls, text) {
     const e = document.createElement(tag);
@@ -61,26 +67,58 @@
     });
   }
 
-  function montarFila() {
-    const lista = Object.values(pinMarkers).filter(o => o.status !== "resolvida" && o.d && o.d.latitude && o.d.longitude);
-    lista.sort((a, b) => new Date(b.d.created_at || 0) - new Date(a.d.created_at || 0));
-    fila = lista;
+  /* Escolhe a próxima ocorrência a partir da lista ATUAL do mapa (e não de
+     uma cópia antiga), seguindo pelo id da última mostrada. Assim o passeio
+     sempre avança, mesmo que o mapa seja atualizado no meio do caminho. */
+  function listaAtual() {
+    const lista = Object.entries(pinMarkers)
+      .filter(([, o]) => o.d && o.d.latitude && o.d.longitude && o.marker)
+      .map(([id, o]) => ({ id, o }));
+    lista.sort((a, b) => new Date(b.o.d.created_at || 0) - new Date(a.o.d.created_at || 0) || String(a.id).localeCompare(String(b.id)));
+    return lista;
+  }
+
+  function proxima() {
+    const lista = listaAtual();
+    if (!lista.length) return null;
+    const i = lista.findIndex(x => x.id === ultimoId);
+    const prox = lista[(i + 1) % lista.length];
+    ultimoId = prox.id;
+    posicao = (lista.indexOf(prox) + 1) + " de " + lista.length;
+    return prox.o;
   }
 
   function passo() {
     if (!ativo) return;
-    if (!fila.length || idx >= fila.length) { montarFila(); idx = 0; }
     desenharContadores();
-    if (!fila.length) { rTitulo.textContent = "Nenhuma ocorrência no mapa ainda"; rInfo.textContent = ""; return; }
-    const o = fila[idx++];
+    const o = proxima();
+    if (!o) { rTitulo.textContent = "Nenhuma ocorrência no mapa ainda"; rInfo.textContent = ""; return; }
     const d = o.d;
     if (typeof arboMap !== "undefined" && arboMap) {
+      const meu = ++seq;
+      limparExtras();
+      /* Resolvidas ficam ocultas no mapa; no passeio elas aparecem só enquanto são a vez delas. */
+      if (!arboMap.hasLayer(o.marker)) { o.marker.addTo(arboMap); extras.add(o); }
+      arboMap.stop();
       arboMap.closePopup();
-      arboMap.flyTo([d.latitude, d.longitude], 16, { duration: 1.6 });
-      setTimeout(() => { if (ativo && arboMap.hasLayer(o.marker)) o.marker.openPopup(); }, 1700);
+      /* Centraliza um pouco acima do pino: o balão abre para cima e
+         fica livre dos contadores, sem precisar mover o mapa depois. */
+      const Z = 16;
+      const alvo = arboMap.unproject(arboMap.project([d.latitude, d.longitude], Z).subtract([0, arboMap.getSize().y * 0.17]), Z);
+      let aberto = false;
+      const abrir = () => {
+        if (aberto || meu !== seq || !ativo || !arboMap.hasLayer(o.marker)) return;
+        aberto = true;
+        const pp = o.marker.getPopup();
+        if (pp) { pp.options.autoPan = false; tocados.add(pp); }
+        o.marker.openPopup();
+      };
+      arboMap.once("moveend", () => setTimeout(abrir, 150));
+      arboMap.flyTo(alvo, Z, { duration: 1.6 });
+      setTimeout(abrir, 2600);
     }
     rTitulo.textContent = d.titulo || "Ocorrência";
-    rInfo.textContent = [d.tipo_categoria, d.localizacao].filter(Boolean).join(" · ");
+    rInfo.textContent = [d.tipo_categoria, d.localizacao, posicao].filter(Boolean).join(" · ");
     barraFill.style.transition = "none";
     barraFill.style.width = "0%";
     void barraFill.offsetWidth;
@@ -95,8 +133,7 @@
     ativo = true;
     document.body.classList.add("apres-on");
     box.hidden = false;
-    idx = 0;
-    montarFila();
+    ultimoId = null;
     setTimeout(() => { if (typeof arboMap !== "undefined" && arboMap) arboMap.invalidateSize(); }, 120);
     try { const r = document.documentElement.requestFullscreen; if (r) r.call(document.documentElement).catch(() => {}); } catch (e) { /* sem tela cheia */ }
     passo();
@@ -106,6 +143,11 @@
   function sairModo() {
     if (!ativo) return;
     ativo = false;
+    seq++;
+    tocados.forEach(pp => { pp.options.autoPan = true; });
+    tocados.clear();
+    if (typeof arboMap !== "undefined" && arboMap) { arboMap.closePopup(); }
+    limparExtras();
     clearInterval(timer);
     document.body.classList.remove("apres-on");
     box.hidden = true;
