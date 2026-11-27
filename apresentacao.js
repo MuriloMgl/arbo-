@@ -104,7 +104,7 @@
       /* Centraliza um pouco acima do pino: o balão abre para cima e
          fica livre dos contadores, sem precisar mover o mapa depois. */
       const Z = 16;
-      const alvo = arboMap.unproject(arboMap.project([d.latitude, d.longitude], Z).subtract([0, arboMap.getSize().y * 0.17]), Z);
+      const alvo = arboMap.unproject(arboMap.project([d.latitude, d.longitude], Z).subtract([0, arboMap.getSize().y * 0.26]), Z);
       let aberto = false;
       const abrir = () => {
         if (aberto || meu !== seq || !ativo || !arboMap.hasLayer(o.marker)) return;
@@ -112,6 +112,18 @@
         const pp = o.marker.getPopup();
         if (pp) { pp.options.autoPan = false; tocados.add(pp); }
         o.marker.openPopup();
+        /* A foto do balão carrega depois e aumenta a altura: confere duas vezes
+           se o topo ficou livre dos contadores e, se não, desce o mapa um pouco. */
+        const livre = () => {
+          if (meu !== seq || !ativo) return;
+          const el = pp && pp.getElement && pp.getElement();
+          if (!el) return;
+          const limite = contadores.getBoundingClientRect().bottom + 18;
+          const topo = el.getBoundingClientRect().top;
+          if (topo < limite) arboMap.panBy([0, topo - limite], { animate: true, duration: 0.4 });
+        };
+        setTimeout(livre, 200);
+        setTimeout(livre, 1100);
       };
       arboMap.once("moveend", () => setTimeout(abrir, 150));
       arboMap.flyTo(alvo, Z, { duration: 1.6 });
